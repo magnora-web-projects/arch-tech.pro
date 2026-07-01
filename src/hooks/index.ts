@@ -1,2 +1,2 @@
 export * from "./Header/useHeaderState";
-export * from "./home/useHeroSlider";
+export * from "./home";

@@ -1,10 +1,24 @@
+"use client";
+
 import Image from "next/image";
+import { motion } from "framer-motion";
+import {
+  textContainerVariants,
+  fadeUpVariants,
+  imageVariants,
+} from "@/src/lib";
 
 export default function MarketingSection() {
   return (
-    <section className="w-full bg-slate-50 py-24 overflow-hidden">
+    <section className="w-full bg-slate-50 pb-24 overflow-hidden">
       <div className="w-[90%] max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-        <div className="relative w-full h-[450px] lg:h-[650px] rounded-[2rem] overflow-hidden shadow-2xl">
+        <motion.div
+          variants={imageVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="relative w-full h-[450px] lg:h-[650px] rounded-[2rem] overflow-hidden shadow-2xl"
+        >
           <Image
             src="/home/marketing.jpg"
             alt="Architectural team collaborating on a design blueprint"
@@ -13,7 +27,6 @@ export default function MarketingSection() {
             sizes="(max-width: 1024px) 90vw, 45vw"
           />
 
-          {/* Floating 'Satisfaction Guarantee' Badge (Glassmorphism) */}
           <div className="absolute bottom-6 left-6 md:bottom-10 md:left-10 bg-slate-900/85 backdrop-blur-md border border-white/10 p-8 rounded-3xl shadow-2xl max-w-[220px]">
             <div className="flex flex-col items-start">
               <span className="text-5xl font-extrabold text-white mb-2 tracking-tighter">
@@ -25,26 +38,38 @@ export default function MarketingSection() {
               </span>
             </div>
           </div>
-        </div>
+        </motion.div>
 
-        {/* Right Side: Typography & Stats */}
-        <div className="flex flex-col justify-center">
-          <h2 className="text-3xl md:text-5xl lg:text-[54px] font-extrabold text-slate-900 leading-[1.15] tracking-tight mb-8">
+        <motion.div
+          variants={textContainerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="flex flex-col justify-center"
+        >
+          <motion.h2
+            variants={fadeUpVariants}
+            className="text-3xl md:text-5xl lg:text-[54px] font-extrabold text-slate-900 leading-[1.15] tracking-tight mb-8"
+          >
             We design meaningful spaces powered by vision and technology.
-          </h2>
+          </motion.h2>
 
-          <p className="text-slate-600 text-[16px] md:text-[18px] leading-relaxed mb-10 font-medium">
+          <motion.p
+            variants={fadeUpVariants}
+            className="text-slate-600 text-[16px] md:text-[18px] leading-relaxed mb-10 font-medium"
+          >
             At ARCHTECH, we combine architectural expertise with advanced
             visualization methods to create spaces that go beyond aesthetics.
             Every project begins with understanding human needs, spatial
             behavior, and the purpose behind the design. Through smart use of
             technology, we turn abstract ideas into precise, livable
             environments—where function, emotion, and innovation meet.
-          </p>
+          </motion.p>
 
-          {/* Flex Container for List and Stats */}
-          <div className="flex flex-col sm:flex-row gap-12 sm:gap-6 border-t border-slate-200 pt-10">
-            {/* Feature List */}
+          <motion.div
+            variants={fadeUpVariants}
+            className="flex flex-col sm:flex-row gap-12 sm:gap-6 border-t border-slate-200 pt-10"
+          >
             <div className="flex-1">
               <ul className="space-y-4">
                 {[
@@ -74,7 +99,6 @@ export default function MarketingSection() {
                     {item}
                   </li>
                 ))}
-                {/* Author/Architect Tag */}
                 <li className="flex items-center text-slate-500 font-semibold text-[15px] pt-2">
                   <span className="text-orange-500 mr-2">@</span> Mahboobeh
                   Shaban
@@ -82,7 +106,6 @@ export default function MarketingSection() {
               </ul>
             </div>
 
-            {/* Modern Typographic Stats (Replacing the old circles) */}
             <div className="flex-1 flex flex-col gap-8 border-l-0 sm:border-l sm:border-slate-200 sm:pl-10">
               <div className="flex items-center gap-5">
                 <span className="text-4xl md:text-5xl font-extrabold text-slate-900 tracking-tighter">
@@ -104,8 +127,8 @@ export default function MarketingSection() {
                 </span>
               </div>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );

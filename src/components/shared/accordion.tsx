@@ -2,12 +2,17 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { FAQItem } from "@/src/lib";
+import {
+  FAQItem,
+  textContainerVariants,
+  fadeUpVariants,
+  containerVariants,
+} from "@/src/lib";
 
 interface AccordionProps {
   subtitle?: string;
   title: string;
-  description?: string; // Optional: Used on sub-pages, omitted on home page
+  description?: string;
   items: FAQItem[];
 }
 
@@ -17,7 +22,6 @@ export default function Accordion({
   description,
   items,
 }: AccordionProps) {
-  // Track which accordion item is currently open. null means all are closed.
   const [openId, setOpenId] = useState<number | null>(null);
 
   const toggleItem = (id: number) => {
@@ -26,7 +30,6 @@ export default function Accordion({
 
   return (
     <div className="flex flex-col w-full pr-0 lg:pr-12">
-      {/* Dynamic Header Section */}
       <div className="mb-10">
         {subtitle && (
           <div className="flex items-center text-slate-500 font-bold text-[12px] uppercase tracking-widest mb-4">
@@ -38,7 +41,6 @@ export default function Accordion({
           {title}
         </h2>
 
-        {/* Render description ONLY if it is provided as a prop */}
         {description && (
           <p className="text-slate-500 text-[16px] leading-relaxed mt-6">
             {description}
@@ -46,7 +48,6 @@ export default function Accordion({
         )}
       </div>
 
-      {/* Accordion List */}
       <div className="flex flex-col border-t border-slate-200">
         {items.map((item) => {
           const isOpen = openId === item.id;
@@ -63,7 +64,6 @@ export default function Accordion({
                   {item.title}
                 </span>
 
-                {/* Plus / Minus Icon */}
                 <div className="ml-4 flex-shrink-0 text-slate-400 group-hover:text-orange-500 transition-colors">
                   {isOpen ? (
                     <svg
@@ -98,7 +98,6 @@ export default function Accordion({
                 </div>
               </button>
 
-              {/* Smooth Height Animation */}
               <AnimatePresence initial={false}>
                 {isOpen && (
                   <motion.div

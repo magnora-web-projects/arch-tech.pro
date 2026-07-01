@@ -1,11 +1,13 @@
 import {
+  HowWeWork,
   Marketing,
   Marquee,
   ServiceShowCase,
   ServicesOne,
   Slider,
+  WhatWeDo,
 } from "@/src/components";
-import Image from "next/image";
+
 export default function Home() {
   return (
     <>
@@ -14,6 +16,9 @@ export default function Home() {
       <Marketing />
       <ServiceShowCase />
       <Marquee />
+      <WhatWeDo />
+      {/*  */}
+      <HowWeWork />
     </>
   );
 }

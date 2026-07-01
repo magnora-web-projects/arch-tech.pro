@@ -3,3 +3,4 @@ export * from "./servicesData";
 export * from "./serviceCardsData";
 export * from "./marqueeData";
 export * from "./faqData";
+export * from "./processData";

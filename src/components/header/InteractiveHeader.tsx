@@ -19,7 +19,7 @@ export default function InteractiveHeader({
   return (
     <>
       <header
-        className={`fixed left-0 right-0 z-50 mx-auto w-[92%] max-w-[1400px] transition-all duration-500 ease-in-out ${
+        className={`fixed left-0 right-0 z-50 mx-auto w-[90%] max-w-[1400px] transition-all duration-500 ease-in-out ${
           scrolled
             ? "top-4 bg-white/85 backdrop-blur-xl shadow-lg border border-white/20 rounded-2xl py-2"
             : "top-6 bg-white/60 backdrop-blur-md shadow-sm border border-white/40 rounded-2xl py-3"

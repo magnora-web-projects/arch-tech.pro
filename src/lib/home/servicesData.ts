@@ -11,7 +11,7 @@ export const servicesData: ServiceItem[] = [
   {
     id: 1,
     iconType: "webfont",
-    iconValue: "flaticon-interior-design", // Your webfont class
+    iconValue: "pbmit-xinterio-icon-living-room",
     title: "Interior Design",
     description: "Shaping spaces that align with purpose and feeling.",
     link: "/services/interior-design",
@@ -19,7 +19,7 @@ export const servicesData: ServiceItem[] = [
   {
     id: 2,
     iconType: "webfont",
-    iconValue: "flaticon-3d-modeling",
+    iconValue: "pbmit-xinterio-icon-3d",
     title: "3D Visualization & Rendering",
     description: "Turning ideas into vivid, detailed visual realities.",
     link: "/services/3d-visualization",
@@ -27,7 +27,7 @@ export const servicesData: ServiceItem[] = [
   {
     id: 3,
     iconType: "webfont",
-    iconValue: "flaticon-mood-board",
+    iconValue: "pbmit-xinterio-icon-brickwall-1",
     title: "Concept & Mood Boards",
     description: "Translating vision into tangible design language.",
     link: "/services/concept-boards",

@@ -42,7 +42,7 @@ export const processData: ProcessStep[] = [
   {
     id: 5,
     numberPrefix: "05",
-    iconClass: "flaticon-chat",
+    iconClass: "pbmit-xinterio-icon-user",
     title: "5. Client Feedback",
     description:
       "We present an initial, simplified version of the design, including an immersive VR walkthrough of your space. Your feedback is essential at this stage, and we welcome any revisions to ensure that the final design fully meets your expectations.",

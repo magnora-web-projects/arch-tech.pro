@@ -18,7 +18,7 @@ export default function Footer() {
                 alt="ARCH-TECH Logo"
                 width={80}
                 height={80}
-                className="object-contain brightness-0 invert opacity-90"
+                className="object-contain opacity-90"
               />
             </Link>
             <p className="text-slate-400 text-[15px] leading-relaxed mb-8 pr-4">

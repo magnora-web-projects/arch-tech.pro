@@ -22,7 +22,7 @@ export default function InteractiveHeader({
         className={`fixed left-0 right-0 z-50 mx-auto w-[90%] max-w-[1400px] transition-all duration-500 ease-in-out ${
           scrolled
             ? "top-4 bg-white/85 backdrop-blur-xl shadow-lg border border-white/20 rounded-2xl py-2"
-            : "top-6 bg-white/60 backdrop-blur-md shadow-sm border border-white/40 rounded-2xl py-3"
+            : "top-6 bg-white/60 backdrop-blur-md shadow-sm border border-white/40 rounded-2xl py-2"
         }`}
       >
         <div className="flex items-center justify-between px-6">
@@ -34,8 +34,8 @@ export default function InteractiveHeader({
               <Image
                 src={"/shared/logo.png"}
                 alt="Brand Logo"
-                width={65}
-                height={65}
+                width={50}
+                height={50}
                 loading="eager"
                 className="object-contain"
               />

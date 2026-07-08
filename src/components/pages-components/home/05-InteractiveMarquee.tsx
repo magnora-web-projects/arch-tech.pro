@@ -1,61 +1,47 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { useInfiniteSlider } from "@/src/hooks/";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
 
-const PlusSeparator = () => (
-  <div className="flex items-center justify-center text-[#716A6E] mx-8 md:mx-16 flex-shrink-0">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="36"
-      height="36"
-      viewBox="0 0 24 24"
-      fill="currentColor"
-    >
-      <path d="M19 10h-7V3h-2v7H3v2h7v7h2v-7h7z" />
-    </svg>
-  </div>
+const DotSeparator = () => (
+  <div className="w-3 h-3 rounded-full bg-gray-600 mx-10 md:mx-20 flex-shrink-0 shadow-[0_0_10px_rgba(255,255,255,0.3)]"></div>
 );
 
 export default function InteractiveMarquee({ items }: { items: string[] }) {
-  const { x, containerRef, handlers } = useInfiniteSlider(1.5);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.to(trackRef.current, {
+        xPercent: -33.33,
+        repeat: -1,
+        duration: 20,
+        ease: "linear",
+      });
+    });
+    return () => ctx.revert();
+  }, []);
 
   const duplicatedItems = [...items, ...items, ...items];
 
   return (
-    <div className="w-full bg-white py-16 overflow-hidden flex items-center cursor-grab active:cursor-grabbing select-none">
-      <motion.div
-        ref={containerRef}
-        style={{ x }}
-        drag="x"
-        dragConstraints={{ left: -10000, right: 10000 }}
-        dragElastic={0}
-        {...handlers}
-        className="flex items-center w-max"
+    <div className="w-full py-24 overflow-hidden flex items-center bg-transparent border-y border-white/5 relative z-10 backdrop-blur-xs">
+      <div
+        ref={trackRef}
+        className="flex items-center w-max will-change-transform"
       >
         {duplicatedItems.map((item, index) => (
           <div key={`${item}-${index}`} className="flex items-center">
-            {/* The Progressive Fill Text Component */}
-            <div className="relative group flex items-center">
-              {/* Layer 1: Outlined Base Text (Always visible) */}
-              <span
-                className="text-6xl sm:text-7xl md:text-[90px] font-extrabold tracking-wide text-transparent whitespace-nowrap transition-transform duration-500 group-hover:scale-105"
-                style={{ WebkitTextStroke: "1.5px #E2E8F0" }}
-              >
-                {item}
-              </span>
-
-              {/* Layer 2: Solid Fill Overlay (Expands on hover) */}
-              <span className="absolute left-0 top-0 text-6xl sm:text-7xl md:text-[90px] font-extrabold tracking-wide text-[#716A6E] whitespace-nowrap overflow-hidden w-0 group-hover:w-full transition-all duration-500 ease-out z-10 group-hover:scale-105 origin-left">
-                {item}
-              </span>
-            </div>
-
-            {/* Separator */}
-            <PlusSeparator />
+            <span
+              className="text-7xl sm:text-8xl md:text-[120px] font-black tracking-tighter text-transparent uppercase whitespace-nowrap"
+              style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}
+            >
+              {item}
+            </span>
+            <DotSeparator />
           </div>
         ))}
-      </motion.div>
+      </div>
     </div>
   );
 }

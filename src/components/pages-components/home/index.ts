@@ -5,5 +5,4 @@ export { default as ServiceShowCase } from "./04-services-slider";
 export { default as Marquee } from "./05-marquee";
 export { default as WhatWeDo } from "./06-what-we-do";
 export { default as HowWeWork } from "./08-how-we-work";
-// export { default as WhatWeDo } from "./06-what-we-do";
-// export { default as WhatWeDo } from "./06-what-we-do";
+export { default as Smooth } from "./SmoothDarkLayout";

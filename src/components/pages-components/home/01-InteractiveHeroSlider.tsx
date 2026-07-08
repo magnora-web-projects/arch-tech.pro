@@ -1,89 +1,108 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useHeroSlider } from "@/src/hooks";
 import { SlideItem } from "@/src/lib";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function InteractiveHeroSlider({
   slides,
 }: {
   slides: SlideItem[];
 }) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const { current, nextSlide, prevSlide, goToSlide } = useHeroSlider(
     slides.length,
   );
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Smooth scale-down on scroll
+      gsap.to(".hero-bg-image", {
+        scale: 1.2,
+        yPercent: 15,
+        opacity: 0.3,
+        ease: "none",
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+    }, containerRef);
+    return () => ctx.revert();
+  }, []);
+
   if (!slides || slides.length === 0) return null;
 
   return (
-    <section className="w-full mx-auto h-[100vh] relative overflow-hidden rounded-b-2xl group shadow-xl bg-slate-950">
+    <section
+      ref={containerRef}
+      className="w-full mx-auto h-[100vh] relative overflow-hidden group bg-transparent"
+    >
       {slides.map((slide, index) => {
         const isActive = index === current;
         return (
           <div
             key={slide.id}
-            className={`absolute inset-0 w-full h-full transition-opacity duration-1000 ease-in-out ${
-              isActive ? "opacity-100 z-10" : "opacity-0 z-0"
+            className={`absolute inset-0 w-full h-full transition-all duration-[1200ms] cubic-bezier(0.87, 0, 0.13, 1) ${
+              isActive ? "opacity-100 z-10" : "opacity-0 z-0 scale-110"
             }`}
           >
-            <Image
-              src={slide.image}
-              alt={slide.title}
-              fill
-              sizes="90vw"
-              quality={75}
-              priority={index === 0}
-              loading={index === 0 ? "eager" : "lazy"}
-              className="object-cover object-center transform scale-105 transition-transform duration-[6000ms] ease-out"
-              style={{
-                transform: isActive ? "scale(1)" : "scale(1.05)",
-              }}
-            />
+            <div className="absolute inset-0 w-full h-full overflow-hidden clip-path-hero">
+              <Image
+                src={slide.image}
+                alt={slide.title}
+                fill
+                sizes="100vw"
+                quality={90}
+                priority={index === 0}
+                className="hero-bg-image object-cover object-center transform transition-transform duration-[8000ms] ease-out"
+                style={{ transform: isActive ? "scale(1)" : "scale(1.15)" }}
+              />
+            </div>
 
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/50 to-black/70 z-20" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-[#050505]/40 to-transparent z-20" />
 
-            <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-30 px-6 max-w-4xl mx-auto">
-              <span
-                className={`text-orange-400 font-bold tracking-[0.25em] text-xs md:text-sm uppercase mb-4 transition-all duration-700 delay-300 ${
-                  isActive
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-4 opacity-0"
-                }`}
-              >
-                {slide.subtitle}
-              </span>
+            <div className="absolute inset-0 flex flex-col items-center justify-center text-center z-30 px-6 max-w-5xl mx-auto mix-blend-difference">
+              <div className="overflow-hidden mb-4">
+                <span
+                  className={`block text-gray-400 font-medium tracking-[0.4em] text-xs md:text-sm uppercase transition-transform duration-1000 delay-300 ${isActive ? "translate-y-0" : "translate-y-full"}`}
+                >
+                  {slide.subtitle}
+                </span>
+              </div>
 
-              <h1
-                className={`text-3xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight mb-6 tracking-tight transition-all duration-700 delay-500 ${
-                  isActive
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-6 opacity-0"
-                }`}
-              >
-                {slide.title}
-              </h1>
+              <div className="overflow-hidden mb-6">
+                <h1
+                  className={`text-5xl md:text-8xl lg:text-[100px] font-extrabold text-white leading-[0.9] tracking-tighter transition-transform duration-1000 delay-500 ${isActive ? "translate-y-0" : "translate-y-[120%]"}`}
+                >
+                  {slide.title}
+                </h1>
+              </div>
 
-              <p
-                className={`text-base md:text-lg text-gray-300 max-w-2xl font-medium mb-8 leading-relaxed transition-all duration-700 delay-700 ${
-                  isActive
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-6 opacity-0"
-                }`}
-              >
-                {slide.description}
-              </p>
+              <div className="overflow-hidden mb-12">
+                <p
+                  className={`text-base md:text-xl text-gray-300 max-w-2xl font-light leading-relaxed transition-transform duration-1000 delay-700 ${isActive ? "translate-y-0" : "translate-y-[120%]"}`}
+                >
+                  {slide.description}
+                </p>
+              </div>
 
               <div
-                className={`transition-all duration-700 delay-900 ${
-                  isActive
-                    ? "translate-y-0 opacity-100"
-                    : "translate-y-6 opacity-0"
-                }`}
+                className={`transition-opacity duration-1000 delay-1000 ${isActive ? "opacity-100" : "opacity-0"}`}
               >
                 <Link
                   href={slide.ctaLink}
-                  className="inline-block bg-white text-slate-900 hover:bg-orange-500 hover:text-white font-bold px-8 py-3.5 rounded-full transition-all duration-300 shadow-lg transform hover:-translate-y-0.5 text-sm md:text-base"
+                  className="inline-block bg-transparent border border-gray-500 text-gray-200 hover:bg-gray-100 hover:text-black font-semibold px-10 py-4 rounded-full transition-all duration-500 text-sm tracking-widest uppercase"
                 >
                   {slide.ctaText}
                 </Link>
@@ -93,59 +112,44 @@ export default function InteractiveHeroSlider({
         );
       })}
 
-      <button
-        onClick={prevSlide}
-        className="absolute left-6 top-1/2 -translate-y-1/2 z-40 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 max-md:hidden"
-        aria-label="Previous Slide"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      {/* Modern minimal navigation arrows */}
+      <div className="absolute bottom-12 left-12 z-40 flex gap-4">
+        <button
+          onClick={prevSlide}
+          className="w-14 h-14 rounded-full border border-gray-600 flex items-center justify-center text-gray-300 hover:bg-white hover:text-black transition-colors duration-300 backdrop-blur-sm"
         >
-          <polyline points="15 18 9 12 15 6"></polyline>
-        </svg>
-      </button>
-
-      <button
-        onClick={nextSlide}
-        className="absolute right-6 top-1/2 -translate-y-1/2 z-40 bg-white/10 hover:bg-white/20 text-white backdrop-blur-md p-3 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 max-md:hidden"
-        aria-label="Next Slide"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M19 12H5M12 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button
+          onClick={nextSlide}
+          className="w-14 h-14 rounded-full border border-gray-600 flex items-center justify-center text-gray-300 hover:bg-white hover:text-black transition-colors duration-300 backdrop-blur-sm"
         >
-          <polyline points="9 18 15 12 9 6"></polyline>
-        </svg>
-      </button>
-
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-40 flex space-x-3 bg-black/20 backdrop-blur-sm px-4 py-2 rounded-full">
-        {slides.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`h-2.5 rounded-full transition-all duration-500 ${
-              index === current
-                ? "w-8 bg-orange-400"
-                : "w-2.5 bg-white/50 hover:bg-white/80"
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </button>
       </div>
     </section>
   );

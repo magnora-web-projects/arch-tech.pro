@@ -5,38 +5,38 @@ import { ScrollToTopButton } from "@/src/components";
 
 export default function Footer() {
   return (
-    <footer className="relative w-full bg-[#16181E] text-slate-300 border-t border-slate-800 pt-20 pb-10 overflow-hidden">
+    <footer className="backdrop-blur-sm relative w-full bg-transparent text-zinc-400 border-t border-white/10 pt-24 pb-10 overflow-hidden z-10">
       <div className="w-[90%] max-w-[1400px] mx-auto relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
           <div className="lg:col-span-4 flex flex-col">
             <Link
               href="/"
-              className="inline-block mb-8 transition-transform hover:scale-105 duration-300 origin-left"
+              className="inline-block mb-8 transition-transform hover:scale-105 duration-300 origin-left "
             >
               <Image
                 src="/shared/logo.png"
                 alt="ARCH-TECH Logo"
-                width={80}
-                height={80}
-                className="object-contain opacity-90"
+                width={70}
+                height={70}
+                className="object-contain opacity-80"
               />
             </Link>
-            <p className="text-slate-400 text-[15px] leading-relaxed mb-8 pr-4">
+            <p className="text-zinc-500 text-[14px] font-light leading-relaxed mb-10 pr-8">
               We combine architectural expertise with advanced visualization
               methods to create spaces that go beyond aesthetics, powered by
-              vision and technology.
+              precision and spatial logic.
             </p>
-            <div className="flex flex-col space-y-4">
-              <div className="flex items-start text-[14.5px] group">
-                <span className="text-orange-500 mr-4 mt-1">
+            <div className="flex flex-col space-y-5">
+              <div className="flex items-start text-[13px] tracking-wide group">
+                <span className="text-zinc-600 mr-4 mt-0.5 group-hover:text-white transition-colors">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
@@ -48,16 +48,16 @@ export default function Footer() {
                   {footerContact.address}
                 </span>
               </div>
-              <div className="flex items-center text-[14.5px] group">
-                <span className="text-orange-500 mr-4">
+              <div className="flex items-center text-[13px] tracking-wide group">
+                <span className="text-zinc-600 mr-4 group-hover:text-white transition-colors">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
@@ -71,16 +71,16 @@ export default function Footer() {
                   {footerContact.phone}
                 </a>
               </div>
-              <div className="flex items-center text-[14.5px] group">
-                <span className="text-orange-500 mr-4">
+              <div className="flex items-center text-[13px] tracking-wide group">
+                <span className="text-zinc-600 mr-4 group-hover:text-white transition-colors">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="18"
-                    height="18"
+                    width="16"
+                    height="16"
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke="currentColor"
-                    strokeWidth="2"
+                    strokeWidth="1.5"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                   >
@@ -99,13 +99,15 @@ export default function Footer() {
           </div>
 
           <div className="lg:col-span-2 lg:col-start-6 flex flex-col">
-            <h4 className="text-white font-bold text-[18px] mb-6">Company</h4>
+            <h4 className="text-white font-semibold tracking-widest uppercase text-[11px] mb-8">
+              Company
+            </h4>
             <ul className="flex flex-col space-y-4">
               {footerLinks.company.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-slate-400 text-[15px] font-medium hover:text-orange-500 hover:translate-x-1 transition-all duration-300 inline-block"
+                    className="text-zinc-500 text-[14px] font-light hover:text-white hover:translate-x-1 transition-all duration-300 inline-block"
                   >
                     {link.label}
                   </Link>
@@ -115,13 +117,15 @@ export default function Footer() {
           </div>
 
           <div className="lg:col-span-3 flex flex-col">
-            <h4 className="text-white font-bold text-[18px] mb-6">Expertise</h4>
+            <h4 className="text-white font-semibold tracking-widest uppercase text-[11px] mb-8">
+              Expertise
+            </h4>
             <ul className="flex flex-col space-y-4">
               {footerLinks.services.map((link) => (
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-slate-400 text-[15px] font-medium hover:text-orange-500 hover:translate-x-1 transition-all duration-300 inline-block"
+                    className="text-zinc-500 text-[14px] font-light hover:text-white hover:translate-x-1 transition-all duration-300 inline-block"
                   >
                     {link.label}
                   </Link>
@@ -131,22 +135,24 @@ export default function Footer() {
           </div>
 
           <div className="lg:col-span-2 flex flex-col items-start lg:items-end">
-            <h4 className="text-white font-bold text-[18px] mb-6">Follow Us</h4>
+            <h4 className="text-white font-semibold tracking-widest uppercase text-[11px] mb-8">
+              Follow Us
+            </h4>
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-slate-800 text-slate-300 hover:bg-orange-500 hover:text-white transition-colors duration-300"
+              className="flex items-center justify-center w-12 h-12 rounded-full border border-white/10 text-zinc-400 hover:bg-white hover:text-black transition-all duration-500"
               aria-label="Instagram"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
-                width="18"
-                height="18"
+                width="16"
+                height="16"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
-                strokeWidth="2"
+                strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
               >
@@ -158,22 +164,22 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-slate-800/80">
-          <p className="text-slate-500 text-[14px] font-medium tracking-wide">
+        <div className="flex flex-col md:flex-row items-center justify-between pt-8 border-t border-white/5">
+          <p className="text-zinc-600 text-[12px] font-light tracking-widest uppercase">
             © {new Date().getFullYear()} ARCH-TECH. All rights reserved.
           </p>
-          <div className="flex space-x-6 mt-4 md:mt-0">
+          <div className="flex space-x-8 mt-6 md:mt-0">
             <Link
               href="/privacy"
-              className="text-slate-500 text-[13px] hover:text-slate-300 transition-colors"
+              className="text-zinc-600 text-[12px] font-light tracking-widest uppercase hover:text-white transition-colors"
             >
-              Privacy Policy
+              Privacy
             </Link>
             <Link
               href="/terms"
-              className="text-slate-500 text-[13px] hover:text-slate-300 transition-colors"
+              className="text-zinc-600 text-[12px] font-light tracking-widest uppercase hover:text-white transition-colors"
             >
-              Terms of Service
+              Terms
             </Link>
           </div>
         </div>
@@ -181,7 +187,7 @@ export default function Footer() {
 
       <ScrollToTopButton />
 
-      <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 text-[150px] md:text-[250px] font-extrabold text-slate-800/10 select-none pointer-events-none whitespace-nowrap z-0 tracking-tighter">
+      <div className="absolute -bottom-16 left-1/2 -translate-x-1/2 text-[150px] md:text-[250px] font-black text-white/[0.02] select-none pointer-events-none whitespace-nowrap z-0 tracking-tighter">
         ARCHTECH
       </div>
     </footer>

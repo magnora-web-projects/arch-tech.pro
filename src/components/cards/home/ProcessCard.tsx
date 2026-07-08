@@ -5,23 +5,25 @@ export default function ProcessCard({ step }: { step: ProcessStep }) {
   return (
     <motion.div
       variants={cardVariants}
-      className="flex flex-col items-center text-center group bg-white/50 backdrop-blur-sm p-8 md:p-10 rounded-[2rem] border border-slate-100 hover:bg-white hover:shadow-[0_20px_50px_-12px_rgba(0,0,0,0.05)] transition-all duration-500 hover:-translate-y-2"
+      className="flex flex-col items-center text-center group bg-[#0d0d0d]/30 backdrop-blur-md p-8 md:p-10 rounded-[2rem] border border-white/5 hover:border-white/20 transition-all duration-500 shadow-[0_25px_50px_rgba(0,0,0,0.5)]"
     >
       <div className="relative mb-8">
-        <div className="w-20 h-20 rounded-full bg-[#2B2D35] flex items-center justify-center group-hover:bg-orange-500 transition-colors duration-500 shadow-md">
-          <i className={`${step.iconClass} text-3xl text-white`}></i>
+        <div className="w-16 h-16 rounded-full border border-zinc-700 flex items-center justify-center group-hover:border-white group-hover:bg-white/5 transition-all duration-500">
+          <i
+            className={`${step.iconClass} text-2xl text-zinc-400 group-hover:text-white transition-colors`}
+          ></i>
         </div>
 
-        <div className="absolute -top-1 -right-4 text-[#8A8F9A] font-medium text-[15px] transition-colors duration-300 group-hover:text-orange-500">
+        <div className="absolute -top-2 -right-6 text-zinc-600 font-semibold text-[13px] tracking-wider transition-colors duration-300 group-hover:text-white">
           {step.numberPrefix}
         </div>
       </div>
 
-      <h3 className="text-[20px] md:text-[22px] font-bold text-slate-900 mb-4 transition-colors duration-300 group-hover:text-orange-600">
+      <h3 className="text-[20px] md:text-[22px] font-bold text-gray-200 mb-4 transition-colors duration-300 group-hover:text-white">
         {step.title}
       </h3>
 
-      <p className="text-slate-500 text-[15px] leading-relaxed">
+      <p className="text-zinc-400 text-[15px] leading-relaxed font-light">
         {step.description}
       </p>
     </motion.div>

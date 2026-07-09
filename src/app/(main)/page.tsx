@@ -1,5 +1,6 @@
 import {
   HowWeWork,
+  Intro,
   Marketing,
   Marquee,
   ServiceShowCase,
@@ -12,6 +13,7 @@ import {
 export default function Home() {
   return (
     <Smooth>
+      <Intro />
       <Slider />
       <ServicesOne />
       <Marketing />

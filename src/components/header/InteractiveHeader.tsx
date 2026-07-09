@@ -136,7 +136,6 @@ export default function InteractiveHeader({
             width={50}
             height={50}
             loading="eager"
-            className="grayscale"
           />
           <button
             onClick={closeMenu}

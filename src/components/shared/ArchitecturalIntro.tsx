@@ -7,22 +7,14 @@ import { useGSAP } from "@gsap/react";
 
 export default function ArchitecturalIntro() {
   const introRef = useRef<HTMLDivElement>(null);
-  const counterRef = useRef<HTMLDivElement>(null);
-  const text1Ref = useRef<HTMLDivElement>(null);
-  const text2Ref = useRef<HTMLDivElement>(null);
-  const img1Ref = useRef<HTMLDivElement>(null);
-  const img2Ref = useRef<HTMLDivElement>(null);
-  const line1Ref = useRef<HTMLDivElement>(null);
-  const line2Ref = useRef<HTMLDivElement>(null);
-
+  const vLineRef = useRef<HTMLDivElement>(null);
+  const hLineRef = useRef<HTMLDivElement>(null);
+  const shapeRef = useRef<HTMLDivElement>(null);
+  const textWrapperRef = useRef<HTMLDivElement>(null);
   const [isComplete, setIsComplete] = useState(false);
 
   useEffect(() => {
-    if (!isComplete) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = isComplete ? "auto" : "hidden";
   }, [isComplete]);
 
   useGSAP(
@@ -30,136 +22,162 @@ export default function ArchitecturalIntro() {
       if (!introRef.current) return;
 
       const tl = gsap.timeline({
-        onComplete: () => {
-          setIsComplete(true);
-        },
+        onComplete: () => setIsComplete(true),
       });
 
-      tl.to([line1Ref.current, line2Ref.current], {
-        scaleX: 1,
+      tl.to(vLineRef.current, {
         scaleY: 1,
-        duration: 1.5,
-        ease: "power3.inOut",
-        stagger: 0.2,
-      });
-
-      const progress = { value: 0 };
-      tl.to(
-        progress,
-        {
-          value: 100,
-          duration: 2,
-          ease: "power2.out",
-          onUpdate: () => {
-            if (counterRef.current) {
-              counterRef.current.innerText = Math.round(progress.value) + "%";
-            }
+        duration: 0.6,
+        ease: "expo.inOut",
+      })
+        .to(
+          hLineRef.current,
+          {
+            scaleX: 1,
+            duration: 0.6,
+            ease: "expo.inOut",
           },
-        },
-        "-=1.5",
-      );
-
-      tl.fromTo(
-        img1Ref.current,
-        { y: -100, opacity: 0, scale: 1.2 },
-        { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "power4.out" },
-        "-=1.5",
-      );
-      tl.fromTo(
-        img2Ref.current,
-        { y: 100, opacity: 0, scale: 1.2 },
-        { y: 0, opacity: 1, scale: 1, duration: 1.5, ease: "power4.out" },
-        "-=1.2",
-      );
-
-      tl.fromTo(
-        [text1Ref.current, text2Ref.current],
-        { y: 50, opacity: 0, clipPath: "inset(100% 0 0 0)" },
-        {
-          y: 0,
-          opacity: 1,
-          clipPath: "inset(0% 0 0 0)",
-          duration: 1,
-          stagger: 0.2,
-          ease: "power3.out",
-        },
-        "-=1",
-      );
-
-      tl.to({}, { duration: 0.5 });
-
-      tl.to(introRef.current, {
-        xPercent: -100,
-        duration: 1.5,
-        ease: "power4.inOut",
-      });
+          "-=0.4",
+        )
+        .to(
+          [vLineRef.current, hLineRef.current],
+          {
+            rotate: 45,
+            duration: 0.8,
+            ease: "power4.inOut",
+          },
+          "+=0.1",
+        )
+        .to(
+          shapeRef.current,
+          {
+            clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
+            duration: 0.8,
+            ease: "expo.out",
+          },
+          "-=0.6",
+        )
+        .fromTo(
+          ".char-letter",
+          {
+            y: (i) => (i % 2 === 0 ? -100 : 100),
+            opacity: 0,
+            rotateX: 90,
+            rotateY: (i) => (i % 2 === 0 ? -45 : 45),
+            z: -500,
+          },
+          {
+            y: 0,
+            opacity: 1,
+            rotateX: 0,
+            rotateY: 0,
+            z: 0,
+            duration: 0.8,
+            stagger: 0.04,
+            ease: "back.out(2)",
+          },
+          "-=0.4",
+        )
+        .to(
+          shapeRef.current,
+          {
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            rotate: -45,
+            scale: 1.5,
+            duration: 1.2,
+            ease: "power4.inOut",
+          },
+          "+=0.3",
+        )
+        .to(
+          ".char-letter",
+          {
+            z: 1000,
+            opacity: 0,
+            scale: 5,
+            filter: "blur(20px)",
+            stagger: {
+              amount: 0.2,
+              from: "center",
+            },
+            duration: 0.8,
+            ease: "power3.in",
+          },
+          "-=1.2",
+        )
+        .to(
+          [vLineRef.current, hLineRef.current],
+          {
+            opacity: 0,
+            scale: 0,
+            duration: 0.4,
+          },
+          "-=1",
+        )
+        .to(
+          introRef.current,
+          {
+            opacity: 0,
+            duration: 0.6,
+            ease: "none",
+          },
+          "-=0.2",
+        );
     },
     { scope: introRef },
   );
 
   if (isComplete) return null;
 
+  const title = "ARCH-TECH";
+
   return (
     <div
       ref={introRef}
-      className="fixed inset-0 z-[100] w-screen h-screen bg-[#050505] flex items-center justify-center overflow-hidden will-change-transform"
+      className="fixed inset-0 z-[100] w-screen h-screen bg-[#020202] flex items-center justify-center overflow-hidden will-change-transform perspective-[1500px]"
     >
       <div
-        ref={line1Ref}
-        className="absolute top-1/4 left-0 w-full h-[1px] bg-white/10 scale-x-0 origin-left"
+        ref={vLineRef}
+        className="absolute w-[1px] h-full bg-orange-500/50 scale-y-0 origin-center z-10"
       />
       <div
-        ref={line2Ref}
-        className="absolute top-0 left-1/3 w-[1px] h-full bg-white/10 scale-y-0 origin-top"
+        ref={hLineRef}
+        className="absolute w-full h-[1px] bg-orange-500/50 scale-x-0 origin-center z-10"
       />
 
       <div
-        ref={img1Ref}
-        className="absolute top-10 right-10 w-[300px] h-[400px] opacity-0 overflow-hidden rounded-xl border border-white/5"
+        ref={shapeRef}
+        className="absolute inset-0 z-20 flex items-center justify-center will-change-transform"
+        style={{ clipPath: "polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)" }}
       >
         <Image
-          src="/home/marketing.jpg"
-          alt="Intro Texture"
+          src="/shared/intro.jpg"
+          alt="Intro"
           fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover grayscale opacity-40"
+          className="object-cover opacity-60 mix-blend-luminosity"
+          priority
         />
+        <div className="absolute inset-0 bg-[#020202]/40" />
       </div>
 
       <div
-        ref={img2Ref}
-        className="absolute bottom-10 left-10 w-[400px] h-[250px] opacity-0 overflow-hidden rounded-xl border border-white/5"
+        ref={textWrapperRef}
+        className="relative z-30 flex items-center justify-center mix-blend-difference"
+        style={{ transformStyle: "preserve-3d" }}
       >
-        <Image
-          src="/home/floor-1.jpg"
-          alt="Intro Texture"
-          fill
-          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-          className="object-cover grayscale opacity-40"
-        />
-      </div>
-
-      <div className="relative z-10 flex flex-col items-center justify-center mix-blend-difference text-white">
-        <div className="absolute -top-16 font-mono text-sm tracking-widest text-orange-500">
-          LOADING <span ref={counterRef}>0%</span>
-        </div>
-
-        <div className="overflow-hidden">
-          <h1
-            ref={text1Ref}
-            className="text-6xl md:text-[120px] font-black tracking-tighter leading-none"
-          >
-            ARCH-TECH
-          </h1>
-        </div>
-        <div className="overflow-hidden mt-2">
-          <span
-            ref={text2Ref}
-            className="text-lg md:text-2xl font-light tracking-[0.5em] text-gray-400 uppercase"
-          >
-            Interior Architecture
-          </span>
-        </div>
+        <h1
+          className="flex text-[10vw] md:text-[130px] font-black text-white tracking-tighter uppercase"
+          style={{ transformStyle: "preserve-3d" }}
+        >
+          {title.split("").map((char, i) => (
+            <span
+              key={i}
+              className="char-letter inline-block will-change-transform"
+            >
+              {char === " " ? "\u00A0" : char}
+            </span>
+          ))}
+        </h1>
       </div>
     </div>
   );

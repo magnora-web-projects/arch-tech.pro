@@ -121,6 +121,7 @@ export default function ArchitecturalIntro() {
           src="/home/marketing.jpg"
           alt="Intro Texture"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover grayscale opacity-40"
         />
       </div>
@@ -133,6 +134,7 @@ export default function ArchitecturalIntro() {
           src="/home/floor-1.jpg"
           alt="Intro Texture"
           fill
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover grayscale opacity-40"
         />
       </div>

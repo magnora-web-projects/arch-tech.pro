@@ -33,6 +33,7 @@ export default function ParallaxFurniture() {
         className="absolute z-0 w-[80%] md:w-[70%] h-auto shadow-2xl"
       >
         <Image
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="/home/floor-1.jpg"
           alt="Modern rug and coffee table layout"
           width={800}
@@ -47,6 +48,7 @@ export default function ParallaxFurniture() {
         className="absolute z-20 top-20 right-[-5%] w-[60%] md:w-[50%] drop-shadow-2xl"
       >
         <Image
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="/home/sofa-1.png"
           alt="Green modern sofa"
           width={600}
@@ -61,6 +63,7 @@ export default function ParallaxFurniture() {
         className="absolute z-10 bottom-[10%] left-0 w-[45%] md:w-[40%] drop-shadow-[0_25px_25px_rgba(0,0,0,0.35)]"
       >
         <Image
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           src="/home/chair-1.png"
           alt="Accent chair"
           width={500}

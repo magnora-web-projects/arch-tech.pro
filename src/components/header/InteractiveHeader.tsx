@@ -21,8 +21,8 @@ export default function InteractiveHeader({
       <header
         className={`fixed left-0 right-0 z-50 mx-auto w-[90%] max-w-[1400px] transition-all duration-500 ease-in-out ${
           scrolled
-            ? "top-4 bg-[#050505]/70 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 rounded-2xl py-2"
-            : "top-6 bg-transparent backdrop-blur-sm border border-white/5 rounded-2xl py-2"
+            ? "top-4 bg-[#050505]/90 backdrop-blur-xl shadow-[0_10px_30px_rgba(0,0,0,0.5)] border border-white/10 rounded-2xl py-2"
+            : "top-6 bg-[#050505]/40 backdrop-blur-md border border-white/10 rounded-2xl py-2 shadow-xl"
         }`}
       >
         <div className="flex items-center justify-between px-6">
@@ -37,23 +37,23 @@ export default function InteractiveHeader({
                 width={50}
                 height={50}
                 loading="eager"
-                className="object-contain"
+                className="object-contain drop-shadow-lg"
               />
             </Link>
           </div>
 
           <div className="hidden lg:flex items-center justify-center flex-1 space-x-1">
-            <nav className="flex items-center bg-white/5 backdrop-blur-md px-6 py-2.5 rounded-full border border-white/10">
+            <nav className="flex items-center bg-[#050505]/50 backdrop-blur-lg px-6 py-2.5 rounded-full border border-white/10 shadow-lg">
               {navItems.map((item) => (
                 <div key={item.label} className="flex items-center">
                   <Link
                     href={item.href}
-                    className="relative text-[12px] uppercase tracking-[0.2em] font-semibold text-zinc-100 hover:text-white transition-colors px-4 group"
+                    className="relative text-[12px] uppercase tracking-[0.2em] font-semibold text-zinc-100 hover:text-white transition-colors px-4 group drop-shadow-md"
                   >
                     {item.label}
-                    <span className="absolute -bottom-1 left-1/2 w-0 h-[1px] bg-white group-hover:w-1/2 group-hover:left-1/4 transition-all duration-300"></span>
+                    <span className="absolute -bottom-1 left-1/2 w-0 h-[1px] bg-white group-hover:w-1/2 group-hover:left-1/4 transition-all duration-300 shadow-[0_0_8px_rgba(255,255,255,0.8)]"></span>
                   </Link>
-                  <span className="text-zinc-700 text-[10px] mx-1 last:hidden">
+                  <span className="text-zinc-500 text-[10px] mx-1 last:hidden">
                     |
                   </span>
                 </div>
@@ -61,7 +61,7 @@ export default function InteractiveHeader({
               <div className="flex items-center ml-4 pl-4 border-l border-white/10">
                 <Link
                   href={"#"}
-                  className="text-[16px] hover:scale-110 transition-all"
+                  className="text-[16px] hover:scale-110 transition-all drop-shadow-md"
                   title="Change Language"
                 >
                   🌎
@@ -71,7 +71,7 @@ export default function InteractiveHeader({
           </div>
 
           <div className="flex justify-end items-center space-x-4">
-            <div className="hidden md:flex items-center bg-[#0a0a0a] border border-white/10 text-zinc-300 px-5 py-2.5 rounded-full shadow-md hover:bg-white hover:text-black transition-all duration-500 cursor-pointer group">
+            <div className="hidden md:flex items-center bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 text-zinc-100 px-5 py-2.5 rounded-full shadow-lg hover:bg-white hover:text-black transition-all duration-500 cursor-pointer group">
               <div className="flex items-center justify-center w-6 h-6 bg-white/10 group-hover:bg-black/10 rounded-full mr-3 transition-colors">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +93,7 @@ export default function InteractiveHeader({
             </div>
 
             <button
-              className="lg:hidden flex items-center justify-center w-10 h-10 bg-white/5 border border-white/10 text-white rounded-full hover:bg-white hover:text-black transition-all"
+              className="lg:hidden flex items-center justify-center w-10 h-10 bg-[#050505]/60 backdrop-blur-md border border-white/10 text-white rounded-full hover:bg-white hover:text-black transition-all shadow-lg"
               onClick={openMenu}
               aria-label="Open Menu"
             >
@@ -117,7 +117,6 @@ export default function InteractiveHeader({
         </div>
       </header>
 
-      {/* Mobile Sidebar Overlay */}
       {isMenuOpen && (
         <div
           className="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] lg:hidden transition-opacity duration-300"
@@ -125,7 +124,6 @@ export default function InteractiveHeader({
         ></div>
       )}
 
-      {/* Mobile Sidebar Menu */}
       <div
         className={`fixed top-0 right-0 h-full w-72 bg-[#050505] border-l border-white/10 shadow-2xl z-[70] transform transition-transform duration-500 ease-out lg:hidden flex flex-col ${
           isMenuOpen ? "translate-x-0" : "translate-x-full"

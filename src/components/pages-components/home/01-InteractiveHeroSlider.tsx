@@ -62,7 +62,7 @@ export default function InteractiveHeroSlider({
                 src={slide.image}
                 alt={slide.title}
                 fill
-                sizes="100vw"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 quality={90}
                 priority={index === 0}
                 className="hero-bg-image object-cover object-center transform transition-transform duration-[8000ms] ease-out"
@@ -112,7 +112,6 @@ export default function InteractiveHeroSlider({
         );
       })}
 
-      {/* Modern minimal navigation arrows */}
       <div className="absolute bottom-12 left-12 z-40 flex gap-4">
         <button
           onClick={prevSlide}

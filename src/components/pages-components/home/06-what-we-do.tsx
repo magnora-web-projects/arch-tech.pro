@@ -25,11 +25,7 @@ export default function WhatWeDoSection() {
           </div>
         </div>
 
-        <div className="flex w-full relative h-[600px] rounded-[2rem] overflow-hidden border border-white/10 bg-[#0a0a0a]/80 backdrop-blur-md ">
-          <div className="w-full h-full opacity-80 mix-blend-lighten">
-            <ParallaxFurniture />
-          </div>
-        </div>
+        <ParallaxFurniture />
       </div>
     </section>
   );

@@ -9,7 +9,6 @@ import { imageVariants, containerVariants } from "@/src/lib";
 export default function ParallaxFurniture() {
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Parallax Scroll Tracking
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
@@ -25,13 +24,12 @@ export default function ParallaxFurniture() {
       variants={containerVariants}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-100px" }} // Triggers the entrance animation slightly before scrolling into full view
+      viewport={{ once: true, margin: "-100px" }}
       className="relative w-full h-[500px] md:h-[650px] flex items-center justify-center"
     >
-      {/* Base Layer: Floor */}
       <motion.div
         variants={imageVariants}
-        style={{ y: yFloor }} // Scroll Parallax
+        style={{ y: yFloor }}
         className="absolute z-0 w-[80%] md:w-[70%] h-auto shadow-2xl"
       >
         <Image
@@ -43,11 +41,10 @@ export default function ParallaxFurniture() {
         />
       </motion.div>
 
-      {/* Top Layer: Sofa */}
       <motion.div
         variants={imageVariants}
-        style={{ y: ySofa }} // Scroll Parallax
-        className="absolute z-20 top-0 right-[-5%] w-[60%] md:w-[50%] drop-shadow-2xl"
+        style={{ y: ySofa }}
+        className="absolute z-20 top-20 right-[-5%] w-[60%] md:w-[50%] drop-shadow-2xl"
       >
         <Image
           src="/home/sofa-1.png"
@@ -58,10 +55,9 @@ export default function ParallaxFurniture() {
         />
       </motion.div>
 
-      {/* Middle Layer: Chair */}
       <motion.div
         variants={imageVariants}
-        style={{ y: yChair }} // Scroll Parallax
+        style={{ y: yChair }}
         className="absolute z-10 bottom-[10%] left-0 w-[45%] md:w-[40%] drop-shadow-[0_25px_25px_rgba(0,0,0,0.35)]"
       >
         <Image

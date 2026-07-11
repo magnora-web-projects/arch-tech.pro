@@ -29,7 +29,7 @@ export const serviceCardsData: ServiceCardItem[] = [
   {
     id: 3,
     numberPrefix: "03",
-    image: "/services/Concept & Mood Boards-1.png",
+    image: "/services/Concept & Mood Boards-1.jpg",
     title: "Concept & Mood Boards",
     description:
       "Curating textures, lighting, and spatial layouts to define the soul of your project.",

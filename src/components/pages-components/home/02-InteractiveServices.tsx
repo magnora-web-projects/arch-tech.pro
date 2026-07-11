@@ -70,7 +70,7 @@ export default function InteractiveServices({
               }`}
             >
               <span className="absolute -top-6 -right-2 text-[140px] font-black text-white/5 group-hover:text-white/10 transition-colors duration-700 pointer-events-none">
-                0{service.id}
+                {service.id}
               </span>
 
               <h3 className="text-2xl font-bold text-gray-100 mb-4 z-10 mt-12 tracking-tight">

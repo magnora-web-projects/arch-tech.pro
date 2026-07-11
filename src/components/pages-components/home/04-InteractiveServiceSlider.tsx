@@ -43,8 +43,8 @@ export default function InteractiveServiceSlider({
     <section className="w-full bg-transparent py-32 overflow-hidden relative z-10 backdrop-blur-xs">
       <div className="w-[85%] max-w-[1400px] mx-auto mb-16">
         <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
-          Intelligence{" "}
-          <span className="text-gray-600 font-serif italic">Applied.</span>
+          What we offer
+          <span className="text-gray-600 font-serif italic"> for you ?</span>
         </h2>
       </div>
 

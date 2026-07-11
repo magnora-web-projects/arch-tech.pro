@@ -22,7 +22,6 @@ export default function InteractiveServices({
       const cards = gsap.utils.toArray<HTMLElement>(".curvy-card");
 
       cards.forEach((card, i) => {
-        // Dramatic curvy offset: alternating heavy X translations mapped to a curve
         const xOffset = i % 2 === 0 ? 150 : -150;
         const rotationOffset = i % 2 === 0 ? 10 : -10;
 
@@ -46,7 +45,7 @@ export default function InteractiveServices({
               trigger: card,
               start: "top 95%",
               end: "top 40%",
-              scrub: 1.5, // The scrub value creates the buttery follow-through
+              scrub: 1.5,
             },
           },
         );
@@ -67,7 +66,7 @@ export default function InteractiveServices({
             <div
               key={service.id}
               className={`curvy-card flex flex-col group bg-white/5 backdrop-blur-md border border-white/10 p-8 rounded-[2rem] hover:bg-white/10 transition-colors duration-500 relative overflow-hidden ${
-                index % 2 !== 0 ? "md:mt-24" : "" // Stagger the physical layout
+                index % 2 !== 0 ? "md:mt-24" : ""
               }`}
             >
               <span className="absolute -top-6 -right-2 text-[140px] font-black text-white/5 group-hover:text-white/10 transition-colors duration-700 pointer-events-none">

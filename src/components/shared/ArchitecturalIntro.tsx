@@ -11,7 +11,14 @@ export default function ArchitecturalIntro() {
   const maskRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLImageElement>(null);
   const textContainerRef = useRef<HTMLDivElement>(null);
-  const [isComplete, setIsComplete] = useState(false);
+  const [isComplete, setIsComplete] = useState(true);
+
+  useEffect(() => {
+    const hasSeenIntro = sessionStorage.getItem("hasSeenIntro");
+    if (!hasSeenIntro) {
+      setIsComplete(false);
+    }
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = isComplete ? "auto" : "hidden";
@@ -19,10 +26,13 @@ export default function ArchitecturalIntro() {
 
   useGSAP(
     () => {
-      if (!introRef.current) return;
+      if (isComplete || !introRef.current) return;
 
       const tl = gsap.timeline({
-        onComplete: () => setIsComplete(true),
+        onComplete: () => {
+          sessionStorage.setItem("hasSeenIntro", "true");
+          setIsComplete(true);
+        },
       });
 
       tl.set(maskRef.current, {
@@ -112,7 +122,7 @@ export default function ArchitecturalIntro() {
           "+=0.1",
         );
     },
-    { scope: introRef },
+    { scope: introRef, dependencies: [isComplete] },
   );
 
   if (isComplete) return null;
@@ -122,7 +132,7 @@ export default function ArchitecturalIntro() {
   return (
     <div
       ref={introRef}
-      className="fixed inset-0 z-[100] w-screen h-screen bg-[#000000] flex items-center justify-center overflow-hidden will-change-transform perspective-[2000px]"
+      className="fixed inset-0 z-[100] w-screen h-screen bg-[#171514] flex items-center justify-center overflow-hidden will-change-transform perspective-[2000px]"
     >
       <div
         ref={sparkRef}
@@ -138,17 +148,17 @@ export default function ArchitecturalIntro() {
           src="/shared/intro.jpg"
           alt="Intro"
           fill
-          className="object-cover opacity-50 grayscale contrast-125 will-change-transform scale-150"
+          className="object-cover opacity-40 mix-blend-luminosity will-change-transform scale-150"
           priority
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#000000] via-transparent to-[#000000] opacity-80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-[#171514] via-transparent to-[#171514] opacity-90" />
       </div>
 
       <div
         ref={textContainerRef}
         className="relative z-20 flex flex-col items-center justify-center mix-blend-screen will-change-transform"
       >
-        <h1 className="flex text-[12vw] md:text-[150px] font-black text-white tracking-tighter uppercase leading-none">
+        <h1 className="flex text-[12vw] md:text-[150px] font-black text-[#F5F5F5] tracking-tighter uppercase leading-none">
           {title.split("").map((char, i) => (
             <span
               key={i}

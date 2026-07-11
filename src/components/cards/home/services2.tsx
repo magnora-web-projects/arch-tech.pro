@@ -8,7 +8,7 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ card }: ServiceCardProps) {
   return (
-    <div className="relative flex-shrink-0 w-[85vw] sm:w-[350px] flex flex-col bg-[#0d0d0d]/40 border border-white/5 backdrop-blur-md rounded-[2rem] overflow-visible group transition-all duration-500 hover:border-white/20 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.7)]">
+    <div className="relative flex-shrink-0 w-[85vw] sm:w-[350px] flex flex-col bg-[#0d0d0d]/40 border border-white/5 backdrop-blur-md rounded-[2rem] overflow-visible group transition-all duration-500 hover:border-white/20 ">
       <div className="p-4 pb-0">
         <div className="relative w-full h-[220px] rounded-2xl overflow-hidden bg-zinc-900">
           <Image

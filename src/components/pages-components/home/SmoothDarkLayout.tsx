@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactLenis } from "@studio-freight/react-lenis";
-import TornadoBackground from "./00-TornadoBackground";
+import LuxuryBackground from "./00-LuxuryBackground";
 
 export default function SmoothDarkLayout({
   children,
@@ -11,8 +11,7 @@ export default function SmoothDarkLayout({
   return (
     <ReactLenis root options={{ lerp: 0.07, smoothWheel: true }}>
       <div className="relative min-h-screen bg-transparent text-gray-200 overflow-hidden selection:bg-white/20 selection:text-white">
-        <TornadoBackground />
-
+        <LuxuryBackground />
         <div className="fixed inset-0 pointer-events-none select-none z-0 overflow-hidden">
           <div
             className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[22vw] font-semibold tracking-tighter whitespace-nowrap text-white"

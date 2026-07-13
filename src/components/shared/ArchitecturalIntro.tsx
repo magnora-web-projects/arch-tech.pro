@@ -1,4 +1,3 @@
-// src/components/shared/ArchitecturalIntro.tsx
 "use client";
 
 import { useRef } from "react";
@@ -16,33 +15,29 @@ export default function ArchitecturalIntro() {
 
   useGSAP(
     () => {
-      // استفاده از ویژگی قدرتمند pathLength="100" در SVG باعث می‌شود
-      // طول تمام خطوط فارغ از اندازه صفحه نمایش دقیقا 100 در نظر گرفته شود.
       gsap.set(".davinci-path", {
         strokeDasharray: 100,
         strokeDashoffset: 100,
         opacity: 0.9,
       });
 
-      // تایم‌لاین بدون استفاده از Pin (فقط بر اساس اسکرول روی ارتفاع 500vh)
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
           end: "+=1800",
           pin: true,
-          scrub: 1.2, // فوق‌العاده نرم برای تاچ موبایل
+          scrub: 1.2,
         },
       });
 
-      // ۱. رسم کادر دور صفحه و خطوط پرسپکتیو به سمت مرکز
       tl.to(".bg-grid-path", {
         strokeDashoffset: 0,
         duration: 2.5,
         ease: "power2.inOut",
         stagger: 0.1,
       })
-        // ۲. رسم طاق، مبل و تناسبات طلایی در مرکز
+
         .to(
           ".masterpiece-path",
           {
@@ -53,7 +48,7 @@ export default function ArchitecturalIntro() {
           },
           "-=1.5",
         )
-        // ۳. ظهور متون باوقار و سه‌بعدی
+
         .fromTo(
           ".davinci-char",
           {
@@ -87,18 +82,17 @@ export default function ArchitecturalIntro() {
           },
           "<0.5",
         )
-        // ۴. شیرجه سینمایی به قلب صفحه
+
         .to(
           stickyRef.current,
           {
-            scale: 3, // زوم بسیار عمیق برای عبور از وسط طاق و مبل
+            scale: 2,
             duration: 3.5,
             ease: "expo.in",
           },
           "+=0.2",
         )
-        // ۵. جادوی نهایی: Fade ریز و سوسکی!
-        // این انیمیشن دقیقا در لحظه‌ای اجرا می‌شود که Hero Slider زیر آن پارک شده است.
+
         .to(
           stickyRef.current,
           {
@@ -107,7 +101,7 @@ export default function ArchitecturalIntro() {
             duration: 1.5,
             ease: "power2.inOut",
           },
-          "-=1.5", // همزمان با بخش انتهایی زوم محو می‌شود
+          "-=1.5",
         );
     },
     { scope: sectionRef },
@@ -116,17 +110,12 @@ export default function ArchitecturalIntro() {
   return (
     <section
       ref={sectionRef}
-      // جادوی CSS: ارتفاع سکشن 500vh است اما مارجین پایین 200vh- دارد.
-      // این یعنی اسلایدر بعدی دقیقا از ارتفاع 300vh شروع به بالا آمدن می‌کند
-      // و چون خودش هم پین می‌شود، این دو لایه روی هم قرار می‌گیرند تا یک ترانزیشن نامرئی بسازند.
-      className="relative w-full h-[200vh] bg-transparent -mb-[200vh] z-[1] pointer-events-none"
+      className="relative w-full h-[200vh] bg-transparent -mb-[200vh] z-[-1] pointer-events-none"
     >
       <div
         ref={stickyRef}
-        // استفاده از Sticky به جای Pin برای جلوگیری از باگ‌های پرش اسکرول
         className="sticky top-0 w-full h-screen bg-[#050505] overflow-hidden flex flex-col items-center justify-center will-change-transform transform-gpu"
       >
-        {/* تعاریف افکت‌های نوری و رنگی */}
         <svg className="absolute w-0 h-0">
           <defs>
             <filter
@@ -168,7 +157,6 @@ export default function ArchitecturalIntro() {
           </defs>
         </svg>
 
-        {/* --- لایه اول: کادرکشی دور تا دور صفحه و خطوط پرسپکتیو کاملا ریسپانسیو --- */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none opacity-40 mix-blend-screen"
           xmlns="http://www.w3.org/2000/svg"
@@ -179,7 +167,6 @@ export default function ArchitecturalIntro() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            {/* کادر محیطی (5 درصد فاصله از لبه‌ها در هر دیوایسی) */}
             <rect
               className="davinci-path bg-grid-path"
               x="5%"
@@ -191,7 +178,6 @@ export default function ArchitecturalIntro() {
               strokeWidth="1.5"
             />
 
-            {/* خطوط پرسپکتیو از ۴ گوشه به مرکز */}
             <line
               className="davinci-path bg-grid-path"
               x1="5%"
@@ -229,7 +215,6 @@ export default function ArchitecturalIntro() {
               strokeWidth="1"
             />
 
-            {/* کادر داخلی انتهای اتاق */}
             <rect
               className="davinci-path bg-grid-path"
               x="35%"
@@ -243,7 +228,6 @@ export default function ArchitecturalIntro() {
           </g>
         </svg>
 
-        {/* --- لایه دوم: بوم هنری مینیمال مرکزی (بدون دفرمگی در موبایل) --- */}
         <svg
           className="absolute w-full h-full max-w-[900px] max-h-[900px] pointer-events-none opacity-90 mix-blend-screen p-4 md:p-0"
           viewBox="0 0 1000 1000"
@@ -256,7 +240,6 @@ export default function ArchitecturalIntro() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            {/* طاق کلاسیک رنسانس */}
             <path
               className="davinci-path masterpiece-path"
               pathLength="100"
@@ -271,7 +254,6 @@ export default function ArchitecturalIntro() {
               d="M 250 1000 L 250 450 A 250 250 0 0 1 750 450 L 750 1000"
             />
 
-            {/* خطوط آویز مرکزی */}
             <line
               className="davinci-path masterpiece-path"
               pathLength="100"
@@ -288,7 +270,6 @@ export default function ArchitecturalIntro() {
               d="M 450 350 L 550 350 L 500 420 Z"
             />
 
-            {/* تناسبات طلایی حول مبل */}
             <circle
               className="davinci-path masterpiece-path"
               pathLength="100"
@@ -307,7 +288,6 @@ export default function ArchitecturalIntro() {
               strokeDasharray="4,6"
             />
 
-            {/* مبل مینیمال معماری */}
             <path
               className="davinci-path masterpiece-path"
               pathLength="100"
@@ -339,7 +319,6 @@ export default function ArchitecturalIntro() {
               d="M 420 680 L 380 550 A 50 50 0 0 1 620 550 L 580 680"
             />
 
-            {/* خطوط راهنمای مهندسی */}
             <line
               className="davinci-path masterpiece-path"
               pathLength="100"
@@ -370,7 +349,6 @@ export default function ArchitecturalIntro() {
           </g>
         </svg>
 
-        {/* تایپوگرافی سه‌بعدی */}
         <div className="relative z-10 flex flex-col items-center justify-center pointer-events-none mt-16 px-4">
           <h1 className="flex text-[clamp(2.8rem,14vw,10rem)] font-thin text-white tracking-tighter uppercase leading-none drop-shadow-[0_10px_30px_rgba(212,163,148,0.4)]">
             {"ARCH TECH".split("").map((char, i) => (

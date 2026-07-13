@@ -17,6 +17,7 @@ export default function InteractiveHeroSlider({
 }: {
   slides: SlideItem[];
 }) {
+  const sectionRef = useRef<HTMLElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const { current, nextSlide, prevSlide } = useHeroSlider(slides.length);
 
@@ -44,10 +45,15 @@ export default function InteractiveHeroSlider({
         ease: "power3.out",
       });
 
+      gsap.fromTo(
+        sectionRef.current,
+        { opacity: 0 },
+        { opacity: 1, duration: 1.4, ease: "power2.out" },
+      );
+
       gsap.to(".hero-main-render-wrapper", {
-        scale: 1.15,
+        scale: 1.5,
         opacity: 0,
-        yPercent: -15,
         ease: "power2.inOut",
         scrollTrigger: {
           trigger: containerRef.current,
@@ -100,7 +106,10 @@ export default function InteractiveHeroSlider({
   if (!slides || slides.length === 0) return null;
 
   return (
-    <section className="w-full h-screen relative bg-transparent z-0">
+    <section
+      ref={sectionRef}
+      className="w-full h-screen relative bg-transparent z-[-1] opacity-0"
+    >
       <div
         ref={containerRef}
         onMouseMove={handleMouseMove}
@@ -176,45 +185,6 @@ export default function InteractiveHeroSlider({
               </div>
             );
           })}
-
-          <div className="absolute bottom-12 left-12 z-40 flex gap-4 pointer-events-auto">
-            <button
-              onClick={prevSlide}
-              className="w-14 h-14 rounded-full border border-white/40 flex items-center justify-center text-white bg-black/50 hover:bg-white hover:text-black hover:border-white transition-all duration-300 backdrop-blur-md shadow-2xl"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M19 12H5M12 19l-7-7 7-7" />
-              </svg>
-            </button>
-            <button
-              onClick={nextSlide}
-              className="w-14 h-14 rounded-full border border-white/40 flex items-center justify-center text-white bg-black/50 hover:bg-white hover:text-black hover:border-white transition-all duration-300 backdrop-blur-md shadow-2xl"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </button>
-          </div>
         </div>
       </div>
     </section>

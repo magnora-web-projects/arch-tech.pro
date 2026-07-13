@@ -29,7 +29,7 @@ export default function ArchitecturalIntro() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "bottom bottom",
+          end: "+=1800",
           pin: true,
           scrub: 1.2, // فوق‌العاده نرم برای تاچ موبایل
         },
@@ -91,7 +91,7 @@ export default function ArchitecturalIntro() {
         .to(
           stickyRef.current,
           {
-            scale: 25, // زوم بسیار عمیق برای عبور از وسط طاق و مبل
+            scale: 3, // زوم بسیار عمیق برای عبور از وسط طاق و مبل
             duration: 3.5,
             ease: "expo.in",
           },
@@ -103,7 +103,7 @@ export default function ArchitecturalIntro() {
           stickyRef.current,
           {
             opacity: 0,
-            filter: "blur(10px)",
+            filter: "blur(25px)",
             duration: 1.5,
             ease: "power2.inOut",
           },
@@ -119,7 +119,7 @@ export default function ArchitecturalIntro() {
       // جادوی CSS: ارتفاع سکشن 500vh است اما مارجین پایین 200vh- دارد.
       // این یعنی اسلایدر بعدی دقیقا از ارتفاع 300vh شروع به بالا آمدن می‌کند
       // و چون خودش هم پین می‌شود، این دو لایه روی هم قرار می‌گیرند تا یک ترانزیشن نامرئی بسازند.
-      className="relative w-full h-[200vh] bg-transparent z-[60] -mb-[200vh]"
+      className="relative w-full h-[200vh] bg-transparent -mb-[200vh] z-[1] pointer-events-none"
     >
       <div
         ref={stickyRef}

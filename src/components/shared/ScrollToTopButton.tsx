@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function ScrollToTopButton() {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Check scroll position to toggle visibility
   useEffect(() => {
     const toggleVisibility = () => {
       if (window.scrollY > 400) {
@@ -43,7 +42,6 @@ export default function ScrollToTopButton() {
             className="flex items-center justify-center w-12 h-12 rounded-full bg-slate-800 text-slate-300 hover:bg-orange-500 hover:text-white transition-all duration-300 shadow-[0_10px_20px_rgba(0,0,0,0.2)] hover:-translate-y-1 focus:outline-none"
           >
             <svg
-              xmlns="http://www.w3.org/2000/svg"
               width="20"
               height="20"
               viewBox="0 0 24 24"

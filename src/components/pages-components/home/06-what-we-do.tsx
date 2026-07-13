@@ -15,7 +15,6 @@ export default function WhatWeDoSection() {
             Turning vision into{" "}
             <span className="text-gray-500 font-serif italic">reality.</span>
           </h2>
-          {/* Ensure your Accordion component handles dark mode via props or CSS updates */}
           <div className="bg-[#0a0a0a]/80 backdrop-blur-md border border-white/10 rounded-3xl p-8">
             <Accordion
               subtitle="What We Do"

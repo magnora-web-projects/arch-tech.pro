@@ -1,78 +1,117 @@
+// src/components/pages-components/home/04-InteractiveServiceSlider_2.tsx
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { motion, useAnimationFrame, useMotionValue } from "framer-motion";
+import { useRef, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { ServiceCardItem } from "@/src/lib";
 import ServiceCard from "../../cards/home/services2";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function InteractiveServiceSlider({
   cards,
 }: {
   cards: ServiceCardItem[];
 }) {
+  const sectionRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
-
-  const x = useMotionValue(0);
-
-  const speed = 1.0;
 
   useEffect(() => {
-    const unsubscribe = x.on("change", (latestX) => {
-      if (!trackRef.current) return;
-      const halfWidth = trackRef.current.scrollWidth / 2;
+    const ctx = gsap.context(() => {
+      const track = trackRef.current;
+      if (!track) return;
 
-      if (latestX <= -halfWidth) {
-        x.set(latestX + halfWidth);
-      } else if (latestX > 0) {
-        x.set(latestX - halfWidth);
+      const getScrollAmount = () => {
+        const trackWidth = track.scrollWidth;
+        const viewportWidth = window.innerWidth;
+        const distance = trackWidth - viewportWidth;
+        return distance > 0 ? distance : 0;
+      };
+
+      if (getScrollAmount() > 0) {
+        gsap.to(track, {
+          x: () => -getScrollAmount(),
+          ease: "none",
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top top",
+            end: () => `+=${getScrollAmount()}`,
+            pin: true,
+            scrub: 1,
+            invalidateOnRefresh: true,
+          },
+        });
       }
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  const handleCardMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+
+    const rotateX = ((y - centerY) / centerY) * -10;
+    const rotateY = ((x - centerX) / centerX) * 10;
+
+    gsap.to(card, {
+      rotateX,
+      rotateY,
+      duration: 0.5,
+      ease: "power2.out",
+      transformPerspective: 1000,
     });
-    return unsubscribe;
-  }, [x]);
+  };
 
-  useAnimationFrame((t, delta) => {
-    if (isHovered || isDragging) return;
-    x.set(x.get() - speed * (delta / 16));
-  });
-
-  const duplicatedCards = [...cards, ...cards, ...cards, ...cards];
+  const handleCardMouseLeave = (e: React.MouseEvent<HTMLDivElement>) => {
+    gsap.to(e.currentTarget, {
+      rotateX: 0,
+      rotateY: 0,
+      duration: 0.7,
+      ease: "power2.out",
+    });
+  };
 
   return (
-    <section className="w-full bg-transparent py-32 overflow-hidden relative z-10 backdrop-blur-xs">
-      <div className="w-[85%] max-w-[1400px] mx-auto mb-16">
-        <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter">
-          What we offer
-          <span className="text-gray-600 font-serif italic"> for you ?</span>
-        </h2>
-      </div>
+    <section className="w-full relative z-10 bg-transparent">
+      <div
+        ref={sectionRef}
+        className="w-full h-screen flex flex-col justify-center overflow-hidden backdrop-blur-xs"
+      >
+        <div className="w-[85%] max-w-[1400px] mx-auto mb-16 shrink-0">
+          <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter">
+            What we offer
+            <span className="text-gray-600 font-serif italic"> for you ?</span>
+          </h2>
+        </div>
 
-      <div className="flex w-full overflow-hidden py-10 cursor-grab active:cursor-grabbing">
-        <motion.div
-          ref={trackRef}
-          style={{ x }}
-          drag="x"
-          dragConstraints={{ left: -10000, right: 10000 }}
-          dragElastic={0}
-          onDragStart={() => setIsDragging(true)}
-          onDragEnd={() => setIsDragging(false)}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-          className="flex gap-10 w-max px-6 md:px-10"
-        >
-          {duplicatedCards.map((card, index) => (
-            <div
-              key={`${card.id}-${index}`}
-              className={`transition-transform duration-700 hover:-translate-y-4 ${
-                index % 2 !== 0 ? "mt-16" : ""
-              }`}
-              style={{ pointerEvents: isDragging ? "none" : "auto" }}
-            >
-              <ServiceCard card={card} />
-            </div>
-          ))}
-        </motion.div>
+        <div className="flex w-full overflow-visible py-10 perspective-[2000px]">
+          <div
+            ref={trackRef}
+            className="flex gap-12 lg:gap-16 w-max px-6 md:px-[7.5vw] will-change-transform"
+          >
+            {cards.map((card, index) => (
+              <div
+                key={card.id}
+                onMouseMove={handleCardMouseMove}
+                onMouseLeave={handleCardMouseLeave}
+                className={`transform-gpu transition-all duration-300 ${
+                  index % 2 !== 0 ? "mt-24" : ""
+                }`}
+              >
+                <ServiceCard card={card} />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

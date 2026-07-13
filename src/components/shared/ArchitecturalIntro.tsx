@@ -1,177 +1,322 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import { gsap } from "gsap";
+import { useRef } from "react";
+import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
 
 export default function ArchitecturalIntro() {
-  const introRef = useRef<HTMLDivElement>(null);
-  const sparkRef = useRef<HTMLDivElement>(null);
-  const maskRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLImageElement>(null);
-  const textContainerRef = useRef<HTMLDivElement>(null);
-  const [isComplete, setIsComplete] = useState(true);
-
-  useEffect(() => {
-    const hasSeenIntro = sessionStorage.getItem("hasSeenIntro");
-    if (!hasSeenIntro) {
-      setIsComplete(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    document.body.style.overflow = isComplete ? "auto" : "hidden";
-  }, [isComplete]);
+  const sectionRef = useRef<HTMLDivElement>(null);
+  const stickyRef = useRef<HTMLDivElement>(null);
 
   useGSAP(
     () => {
-      if (isComplete || !introRef.current) return;
+      // The hero slider lives in a *different* section right below this one.
+      // Because useGSAP scopes string selectors to `sectionRef`, we grab the
+      // real DOM node with a plain querySelector so we can animate it from
+      // inside this timeline too. This is what lets both animations be
+      // driven by the exact same scrubbed progress (=> perfectly synced).
+      const heroWrapper = document.querySelector<HTMLDivElement>(
+        ".hero-main-render-wrapper",
+      );
+
+      if (heroWrapper) {
+        // Start the hero completely "inside" the vanishing point: tiny,
+        // invisible, centered. transform-origin defaults to 50% 50%, which
+        // is exactly the "heart" of that section.
+        gsap.set(heroWrapper, {
+          scale: 0.15,
+          opacity: 0,
+          filter: "blur(15px)",
+          transformOrigin: "50% 50%",
+        });
+      }
+
+      const paths = gsap.utils.toArray<SVGPathElement>(".davinci-path");
+
+      paths.forEach((path) => {
+        const length = path.getTotalLength();
+        gsap.set(path, {
+          strokeDasharray: length,
+          strokeDashoffset: length,
+          opacity: 0.9,
+        });
+      });
 
       const tl = gsap.timeline({
-        onComplete: () => {
-          sessionStorage.setItem("hasSeenIntro", "true");
-          setIsComplete(true);
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "+=1800",
+          pin: true,
+          pinSpacing: true,
+          scrub: 1.2,
+          anticipatePin: 1,
+          invalidateOnRefresh: true,
         },
       });
 
-      tl.set(maskRef.current, {
-        clipPath: "polygon(50% 50%, 50% 50%, 50% 50%, 50% 50%)",
-      });
-
-      tl.to(sparkRef.current, {
-        scale: 1,
-        opacity: 1,
-        duration: 0.8,
+      tl.to(".room-path", {
+        strokeDashoffset: 0,
+        duration: 3,
         ease: "power2.out",
+        stagger: 0.15,
       })
-        .to(sparkRef.current, {
-          scaleX: 200,
-          scaleY: 0.1,
-          duration: 0.8,
-          ease: "expo.inOut",
-        })
-        .to(sparkRef.current, {
-          opacity: 0,
-          duration: 0.2,
-        })
+
         .to(
-          maskRef.current,
+          ".furniture-path",
           {
-            clipPath: "polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)",
-            duration: 1.2,
-            ease: "expo.inOut",
-          },
-          "-=0.2",
-        )
-        .to(
-          imageRef.current,
-          {
-            scale: 1.1,
-            duration: 3,
-            ease: "power1.out",
-          },
-          "-=1.2",
-        )
-        .to(
-          maskRef.current,
-          {
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-            duration: 1,
-            ease: "power4.inOut",
+            strokeDashoffset: 0,
+            duration: 2.5,
+            ease: "power2.inOut",
+            stagger: 0.05,
           },
           "-=2",
         )
+
         .fromTo(
-          ".dramatic-char",
+          ".davinci-char",
           {
             opacity: 0,
-            scale: 3,
             filter: "blur(20px)",
             y: 50,
+            scale: 0.9,
+            rotationX: 45,
           },
           {
             opacity: 1,
-            scale: 1,
             filter: "blur(0px)",
             y: 0,
-            duration: 1.2,
+            scale: 1,
+            rotationX: 0,
+            duration: 2,
             stagger: 0.1,
             ease: "power3.out",
           },
-          "-=1.2",
+          "-=1.5",
         )
-        .to(
-          textContainerRef.current,
+        .fromTo(
+          ".davinci-subtitle",
+          { opacity: 0, letterSpacing: "0em" },
           {
-            scale: 1.05,
-            duration: 2,
-            ease: "none",
+            opacity: 1,
+            letterSpacing: "0.8em",
+            duration: 1.5,
+            ease: "power2.out",
           },
-          "-=1.2",
+          "<0.5",
         )
+
         .to(
-          introRef.current,
+          stickyRef.current,
           {
-            scale: 8,
+            scale: 1.5,
             opacity: 0,
-            filter: "blur(30px)",
-            duration: 1.2,
-            ease: "expo.in",
+            filter: "blur(25px)",
+            duration: 2.5,
+            ease: "power2.inOut",
           },
-          "+=0.1",
+          "+=0.5",
         );
+
+      // Hero zooms OUT from the exact same center point, at the exact same
+      // scrubbed timestamp as the intro zooming in/fading away. "<" means
+      // "start together with the previous tween" — since both tweens now
+      // live on one shared, scroll-scrubbed timeline, they stay
+      // frame-perfectly in sync with however fast the user scrolls.
+      if (heroWrapper) {
+        tl.fromTo(
+          heroWrapper,
+          {
+            scale: 0.15,
+            opacity: 0,
+            filter: "blur(15px)",
+          },
+          {
+            scale: 1,
+            opacity: 1,
+            filter: "blur(0px)",
+            duration: 2.5,
+            ease: "power2.inOut",
+          },
+          "<",
+        );
+      }
     },
-    { scope: introRef, dependencies: [isComplete] },
+    { scope: sectionRef },
   );
 
-  if (isComplete) return null;
-
-  const title = "ARCH-TECH";
-
   return (
-    <div
-      ref={introRef}
-      className="fixed inset-0 z-[100] w-screen h-screen bg-[#171514] flex items-center justify-center overflow-hidden will-change-transform perspective-[2000px]"
+    <section
+      ref={sectionRef}
+      className="relative w-full h-[100vh] bg-transparent z-[60] pointer-events-none"
     >
       <div
-        ref={sparkRef}
-        className="absolute z-30 w-2 h-2 bg-[#D4A394] rounded-full opacity-0 shadow-[0_0_30px_5px_rgba(212,163,148,0.8)] will-change-transform"
-      />
-
-      <div
-        ref={maskRef}
-        className="absolute inset-0 z-10 w-full h-full will-change-transform"
+        ref={stickyRef}
+        className="absolute inset-0 bg-[#050505af] overflow-hidden flex flex-col items-center justify-center will-change-transform"
       >
-        <Image
-          ref={imageRef}
-          src="/shared/intro.jpg"
-          alt="Intro"
-          fill
-          className="object-cover opacity-40 mix-blend-luminosity will-change-transform scale-150"
-          priority
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-[#171514] via-transparent to-[#171514] opacity-90" />
-      </div>
-
-      <div
-        ref={textContainerRef}
-        className="relative z-20 flex flex-col items-center justify-center mix-blend-screen will-change-transform"
-      >
-        <h1 className="flex text-[12vw] md:text-[150px] font-black text-[#F5F5F5] tracking-tighter uppercase leading-none">
-          {title.split("").map((char, i) => (
-            <span
-              key={i}
-              className="dramatic-char inline-block will-change-transform"
+        <svg className="absolute w-0 h-0">
+          <defs>
+            <filter
+              id="davinci-glow"
+              x="-20%"
+              y="-20%"
+              width="140%"
+              height="140%"
             >
-              {char === " " ? "\u00A0" : char}
-            </span>
-          ))}
-        </h1>
-        <div className="dramatic-char mt-6 text-[10px] md:text-sm font-bold text-[#D4A394] uppercase tracking-[0.8em] will-change-transform">
-          The Pinnacle of Design
+              <feGaussianBlur stdDeviation="5" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <linearGradient
+              id="gold-gradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" stopColor="#D4A394" />
+              <stop offset="50%" stopColor="#F5E6D3" />
+              <stop offset="100%" stopColor="#8A5A44" />
+            </linearGradient>
+            <linearGradient
+              id="grid-gradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop offset="0%" stopColor="#444444" />
+              <stop offset="50%" stopColor="#666666" />
+              <stop offset="100%" stopColor="#222222" />
+            </linearGradient>
+          </defs>
+        </svg>
+
+        <svg
+          className="absolute inset-0 w-full h-full opacity-40 mix-blend-screen"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <g
+            filter="url(#davinci-glow)"
+            stroke="url(#grid-gradient)"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path
+              className="davinci-path room-path"
+              vectorEffect="non-scaling-stroke"
+              strokeWidth="1.5"
+              d="M 5 5 L 95 5 L 95 95 L 5 95 Z"
+            />
+
+            <path
+              className="davinci-path room-path"
+              vectorEffect="non-scaling-stroke"
+              strokeWidth="1"
+              d="M 35 35 L 65 35 L 65 65 L 35 65 Z"
+            />
+
+            <path
+              className="davinci-path room-path"
+              vectorEffect="non-scaling-stroke"
+              strokeWidth="1"
+              d="M 5 5 L 35 35 M 95 5 L 65 35 M 5 95 L 35 65 M 95 95 L 65 65"
+            />
+          </g>
+        </svg>
+
+        <svg
+          className="absolute w-[90vw] max-w-[700px] h-[90vw] max-h-[700px] opacity-90 mix-blend-screen"
+          viewBox="0 0 500 500"
+          preserveAspectRatio="xMidYMid meet"
+        >
+          <g
+            filter="url(#davinci-glow)"
+            stroke="url(#gold-gradient)"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <circle
+              className="davinci-path furniture-path"
+              cx="250"
+              cy="250"
+              r="160"
+              strokeWidth="0.5"
+            />
+            <circle
+              className="davinci-path furniture-path"
+              cx="250"
+              cy="250"
+              r="120"
+              strokeWidth="0.5"
+              strokeDasharray="4,6"
+            />
+            <circle
+              className="davinci-path furniture-path"
+              cx="250"
+              cy="250"
+              r="80"
+              strokeWidth="0.5"
+            />
+
+            <path
+              className="davinci-path furniture-path"
+              strokeWidth="1.5"
+              d="M 120 300 L 380 300 L 420 350 L 80 350 Z"
+            />
+            <path
+              className="davinci-path furniture-path"
+              strokeWidth="1.5"
+              d="M 150 200 L 350 200 L 380 300 L 120 300 Z"
+            />
+            <path
+              className="davinci-path furniture-path"
+              strokeWidth="1"
+              d="M 120 300 L 120 420 M 380 300 L 380 420 M 80 350 L 80 450 M 420 350 L 420 450"
+            />
+
+            <path
+              className="davinci-path furniture-path"
+              strokeWidth="0.5"
+              d="M 50 460 L 450 460 M 250 40 L 250 460"
+            />
+            <path
+              className="davinci-path furniture-path"
+              strokeWidth="0.5"
+              strokeDasharray="2,4"
+              d="M 230 440 L 270 440 M 230 480 L 270 480"
+            />
+          </g>
+        </svg>
+
+        <div className="relative z-10 flex flex-col items-center justify-center mt-12 px-4">
+          <h1 className="flex text-[clamp(2.8rem,14vw,10rem)] font-normal text-white tracking-tighter uppercase leading-none drop-shadow-[0_10px_40px_rgba(212,163,148,0.7)]">
+            {"ARCH TECH".split("").map((char, i) => (
+              <span
+                key={i}
+                className="davinci-char inline-block will-change-transform transform-style-3d"
+              >
+                {char === " " ? "\u00A0" : char}
+              </span>
+            ))}
+          </h1>
+
+          <div className="davinci-subtitle absolute -bottom-10 md:-bottom-8 text-[0.65rem] md:text-sm font-semibold text-[#D4A394] uppercase tracking-[1em] will-change-transform drop-shadow-[0_0_20px_rgba(212,163,148,1)]">
+            Design The Future
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

@@ -1,3 +1,4 @@
+// src/components/shared/ArchitecturalIntro.tsx
 "use client";
 
 import { useRef } from "react";
@@ -15,29 +16,9 @@ export default function ArchitecturalIntro() {
 
   useGSAP(
     () => {
-      // The hero slider lives in a *different* section right below this one.
-      // Because useGSAP scopes string selectors to `sectionRef`, we grab the
-      // real DOM node with a plain querySelector so we can animate it from
-      // inside this timeline too. This is what lets both animations be
-      // driven by the exact same scrubbed progress (=> perfectly synced).
-      const heroWrapper = document.querySelector<HTMLDivElement>(
-        ".hero-main-render-wrapper",
-      );
-
-      if (heroWrapper) {
-        // Start the hero completely "inside" the vanishing point: tiny,
-        // invisible, centered. transform-origin defaults to 50% 50%, which
-        // is exactly the "heart" of that section.
-        gsap.set(heroWrapper, {
-          scale: 0.15,
-          opacity: 0,
-          filter: "blur(15px)",
-          transformOrigin: "50% 50%",
-        });
-      }
-
       const paths = gsap.utils.toArray<SVGPathElement>(".davinci-path");
 
+      // آماده‌سازی خطوط برای انیمیشن رسم شدن
       paths.forEach((path) => {
         const length = path.getTotalLength();
         gsap.set(path, {
@@ -51,22 +32,23 @@ export default function ArchitecturalIntro() {
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=1800",
+          end: "+=1800", // طول اسکرول برای انجام کل انیمیشن
           pin: true,
           pinSpacing: true,
-          scrub: 1.2,
+          scrub: 1.2, // نرمی اسکرول برای موبایل
           anticipatePin: 1,
           invalidateOnRefresh: true,
         },
       });
 
+      // ۱. رسم کادر و پرسپکتیو اتاق (واکنش‌گرا)
       tl.to(".room-path", {
         strokeDashoffset: 0,
         duration: 3,
         ease: "power2.out",
         stagger: 0.15,
       })
-
+        // ۲. رسم دیتیل‌های مبل و معماری مرکزی
         .to(
           ".furniture-path",
           {
@@ -77,7 +59,7 @@ export default function ArchitecturalIntro() {
           },
           "-=2",
         )
-
+        // ۳. ظهور متون با کنتراست بالا
         .fromTo(
           ".davinci-char",
           {
@@ -110,42 +92,18 @@ export default function ArchitecturalIntro() {
           },
           "<0.5",
         )
-
+        // ۴. ترانزیشن Zoom Out و فید شدن به سمت Hero Slider
         .to(
           stickyRef.current,
           {
-            scale: 1.5,
-            opacity: 0,
+            scale: 0.65, // زوم اوت نرم
+            opacity: 0, // محو شدن کامل
             filter: "blur(25px)",
             duration: 2.5,
             ease: "power2.inOut",
           },
-          "+=0.5",
+          "+=0.5", // مکث کوتاه قبل از خروج
         );
-
-      // Hero zooms OUT from the exact same center point, at the exact same
-      // scrubbed timestamp as the intro zooming in/fading away. "<" means
-      // "start together with the previous tween" — since both tweens now
-      // live on one shared, scroll-scrubbed timeline, they stay
-      // frame-perfectly in sync with however fast the user scrolls.
-      if (heroWrapper) {
-        tl.fromTo(
-          heroWrapper,
-          {
-            scale: 0.15,
-            opacity: 0,
-            filter: "blur(15px)",
-          },
-          {
-            scale: 1,
-            opacity: 1,
-            filter: "blur(0px)",
-            duration: 2.5,
-            ease: "power2.inOut",
-          },
-          "<",
-        );
-      }
     },
     { scope: sectionRef },
   );
@@ -153,11 +111,12 @@ export default function ArchitecturalIntro() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[100vh] bg-transparent z-[60] pointer-events-none"
+      // اضافه شدن pointer-events-none کلید حل مشکل کلیک نشدن سایت است
+      className="relative w-full h-screen bg-transparent z-[60] pointer-events-none"
     >
       <div
         ref={stickyRef}
-        className="absolute inset-0 bg-[#050505af] overflow-hidden flex flex-col items-center justify-center will-change-transform"
+        className="absolute inset-0 bg-[#050505] overflow-hidden flex flex-col items-center justify-center will-change-transform"
       >
         <svg className="absolute w-0 h-0">
           <defs>
@@ -200,6 +159,7 @@ export default function ArchitecturalIntro() {
           </defs>
         </svg>
 
+        {/* لایه اول: رسم اتاق سه‌بعدی و کادر (استفاده از preserveAspectRatio="none" برای پوشش کامل و هوشمند موبایل و دسکتاپ) */}
         <svg
           className="absolute inset-0 w-full h-full opacity-40 mix-blend-screen"
           viewBox="0 0 100 100"
@@ -212,20 +172,21 @@ export default function ArchitecturalIntro() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
+            {/* کادر محیطی بیرون */}
             <path
               className="davinci-path room-path"
               vectorEffect="non-scaling-stroke"
               strokeWidth="1.5"
               d="M 5 5 L 95 5 L 95 95 L 5 95 Z"
             />
-
+            {/* کادر دیوار انتهایی پرسپکتیو */}
             <path
               className="davinci-path room-path"
               vectorEffect="non-scaling-stroke"
               strokeWidth="1"
               d="M 35 35 L 65 35 L 65 65 L 35 65 Z"
             />
-
+            {/* خطوط اتصال پرسپکتیو */}
             <path
               className="davinci-path room-path"
               vectorEffect="non-scaling-stroke"
@@ -235,6 +196,7 @@ export default function ArchitecturalIntro() {
           </g>
         </svg>
 
+        {/* لایه دوم: رسم جزئیات مبل و معماری (استفاده از preserveAspectRatio="xMidYMid meet" برای جلوگیری از دفرمگی در موبایل) */}
         <svg
           className="absolute w-[90vw] max-w-[700px] h-[90vw] max-h-[700px] opacity-90 mix-blend-screen"
           viewBox="0 0 500 500"
@@ -247,6 +209,7 @@ export default function ArchitecturalIntro() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
+            {/* حلقه‌های تناسبات فیبوناچی */}
             <circle
               className="davinci-path furniture-path"
               cx="250"
@@ -270,6 +233,7 @@ export default function ArchitecturalIntro() {
               strokeWidth="0.5"
             />
 
+            {/* رسم فریم یک مبل مدرن */}
             <path
               className="davinci-path furniture-path"
               strokeWidth="1.5"
@@ -286,6 +250,7 @@ export default function ArchitecturalIntro() {
               d="M 120 300 L 120 420 M 380 300 L 380 420 M 80 350 L 80 450 M 420 350 L 420 450"
             />
 
+            {/* خط کشی‌های مهندسی پایین */}
             <path
               className="davinci-path furniture-path"
               strokeWidth="0.5"
@@ -300,6 +265,7 @@ export default function ArchitecturalIntro() {
           </g>
         </svg>
 
+        {/* متون مرکزی با کنتراست بهبود یافته */}
         <div className="relative z-10 flex flex-col items-center justify-center mt-12 px-4">
           <h1 className="flex text-[clamp(2.8rem,14vw,10rem)] font-normal text-white tracking-tighter uppercase leading-none drop-shadow-[0_10px_40px_rgba(212,163,148,0.7)]">
             {"ARCH TECH".split("").map((char, i) => (

@@ -1,6 +1,7 @@
 import { heroSlides } from "@/src/lib";
-import InteractiveHeroSlider from "./01-InteractiveHeroSlider";
+
+import HeroSliderSection from "../../interactive-components/home/HeroSlider";
 
 export default function HeroSlider() {
-  return <InteractiveHeroSlider slides={heroSlides} />;
+  return <HeroSliderSection slides={heroSlides} />;
 }

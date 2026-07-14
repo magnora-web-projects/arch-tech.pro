@@ -1,6 +1,6 @@
 import { serviceCardsData } from "@/src/lib";
-import InteractiveServiceSlider from "./04-InteractiveServiceSlider";
+import { ServiceSlider } from "../../interactive-components";
 
 export default function ServicesShowcase() {
-  return <InteractiveServiceSlider cards={serviceCardsData} />;
+  return <ServiceSlider cards={serviceCardsData} />;
 }

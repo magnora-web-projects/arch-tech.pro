@@ -1,10 +1,10 @@
 import { marqueeData } from "@/src/lib";
-import InteractiveMarquee from "./05-InteractiveMarquee";
+import { Marquee } from "../../interactive-components";
 
 export default function MarqueeSection() {
   return (
     <section className=" w-full border-y border-slate-100">
-      <InteractiveMarquee items={marqueeData} />
+      <Marquee items={marqueeData} />
     </section>
   );
 }

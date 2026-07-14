@@ -104,7 +104,7 @@ export default function InteractiveServiceSlider({
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
                 className={`transform-gpu transition-all duration-300 ${
-                  index % 2 !== 0 ? "mt-12" : ""
+                  index % 2 !== 0 ? "lg:mt-12" : ""
                 }`}
               >
                 <ServiceCard card={card} />

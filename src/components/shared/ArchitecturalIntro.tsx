@@ -15,40 +15,87 @@ export default function ArchitecturalIntro() {
 
   useGSAP(
     () => {
+      // 1. Initial Setup
       gsap.set(".davinci-path", {
         strokeDasharray: 100,
         strokeDashoffset: 100,
         opacity: 0.9,
       });
 
+      // Prepare the interior to be hidden and slightly scaled down initially
+      gsap.set(".interior-group", {
+        opacity: 0,
+        scale: 0.8,
+        transformOrigin: "50% 60%",
+      });
+
+      // Prepare the arch transform origin for accurate scaling
+      gsap.set(".arch-group", { transformOrigin: "500px 700px" });
+
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
           start: "top top",
-          end: "+=1800",
+          end: () => `+=${window.innerHeight * 2.5}`,
           pin: true,
-          scrub: 1.2,
+          scrub: 1, // Reduced scrub delay slightly for a tighter feel
         },
       });
 
+      // --- PHASE 1: Draw the Gateway ---
       tl.to(".bg-grid-path", {
         strokeDashoffset: 0,
-        duration: 2.5,
+        duration: 1.5,
         ease: "power2.inOut",
         stagger: 0.1,
       })
-
         .to(
-          ".masterpiece-path",
+          ".arch-path",
           {
             strokeDashoffset: 0,
-            duration: 3,
+            duration: 2,
             ease: "power2.out",
             stagger: 0.05,
           },
-          "-=1.5",
+          "-=1",
         )
 
+        // --- PHASE 2: Push Through The Door ---
+        .addLabel("pushThrough")
+        .to(
+          ".arch-group",
+          {
+            scale: 15, // Massively scale to swallow the screen
+            opacity: 0,
+            duration: 2.5,
+            ease: "power2.in",
+          },
+          "pushThrough",
+        )
+
+        // --- PHASE 3: Reveal The Room & Text ---
+        .to(
+          ".interior-group",
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 2,
+            ease: "power2.out",
+          },
+          "pushThrough+=0.5",
+        )
+        .to(
+          ".interior-path",
+          {
+            strokeDashoffset: 0,
+            duration: 2.5,
+            ease: "power2.out",
+            stagger: 0.04,
+          },
+          "pushThrough+=0.5",
+        )
+
+        // Text appears rapidly as you enter the room
         .fromTo(
           ".davinci-char",
           {
@@ -64,11 +111,11 @@ export default function ArchitecturalIntro() {
             y: 0,
             scale: 1,
             rotationX: 0,
-            duration: 2,
-            stagger: 0.08,
+            duration: 1.5,
+            stagger: 0.05,
             ease: "power3.out",
           },
-          "-=2.5",
+          "pushThrough+=0.8",
         )
         .fromTo(
           ".davinci-subtitle",
@@ -80,28 +127,20 @@ export default function ArchitecturalIntro() {
             duration: 1.5,
             ease: "power2.out",
           },
-          "<0.5",
+          "<0.3",
         )
 
+        // Final fade out
         .to(
           stickyRef.current,
           {
-            scale: 2,
-            duration: 3.5,
-            ease: "expo.in",
-          },
-          "+=0.2",
-        )
-
-        .to(
-          stickyRef.current,
-          {
+            scale: 1.5,
             opacity: 0,
-            filter: "blur(25px)",
-            duration: 1.5,
+            filter: "blur(20px)",
+            duration: 2,
             ease: "power2.inOut",
           },
-          "-=1.5",
+          "+=0.5",
         );
     },
     { scope: sectionRef },
@@ -110,7 +149,7 @@ export default function ArchitecturalIntro() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full h-[200vh] bg-transparent -mb-[200vh] z-[-1] pointer-events-none"
+      className="relative w-full h-[250vh] bg-transparent -mb-[250vh] z-[-1] pointer-events-none"
     >
       <div
         ref={stickyRef}
@@ -157,6 +196,7 @@ export default function ArchitecturalIntro() {
           </defs>
         </svg>
 
+        {/* BACKGROUND GRID */}
         <svg
           className="absolute inset-0 w-full h-full pointer-events-none opacity-40 mix-blend-screen"
           xmlns="http://www.w3.org/2000/svg"
@@ -174,62 +214,32 @@ export default function ArchitecturalIntro() {
               width="90%"
               height="90%"
               pathLength="100"
-              stroke="url(#gold-gradient)"
               strokeWidth="1.5"
             />
-
             <line
               className="davinci-path bg-grid-path"
-              x1="5%"
-              y1="5%"
-              x2="50%"
-              y2="50%"
-              pathLength="100"
-              strokeWidth="1"
-            />
-            <line
-              className="davinci-path bg-grid-path"
-              x1="95%"
-              y1="5%"
-              x2="50%"
-              y2="50%"
-              pathLength="100"
-              strokeWidth="1"
-            />
-            <line
-              className="davinci-path bg-grid-path"
-              x1="5%"
-              y1="95%"
-              x2="50%"
-              y2="50%"
-              pathLength="100"
-              strokeWidth="1"
-            />
-            <line
-              className="davinci-path bg-grid-path"
-              x1="95%"
-              y1="95%"
-              x2="50%"
-              y2="50%"
-              pathLength="100"
-              strokeWidth="1"
-            />
-
-            <rect
-              className="davinci-path bg-grid-path"
-              x="35%"
-              y="35%"
-              width="30%"
-              height="30%"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
               pathLength="100"
               strokeWidth="0.5"
-              strokeDasharray="5,5"
+            />
+            <line
+              className="davinci-path bg-grid-path"
+              x1="100%"
+              y1="0%"
+              x2="0%"
+              y2="100%"
+              pathLength="100"
+              strokeWidth="0.5"
             />
           </g>
         </svg>
 
+        {/* MAIN BLUEPRINT CANVAS */}
         <svg
-          className="absolute w-full h-full max-w-[900px] max-h-[900px] pointer-events-none opacity-90 mix-blend-screen p-4 md:p-0"
+          className="absolute w-full h-full pointer-events-none opacity-90 mix-blend-screen overflow-visible"
           viewBox="0 0 1000 1000"
           preserveAspectRatio="xMidYMid meet"
         >
@@ -240,112 +250,234 @@ export default function ArchitecturalIntro() {
             strokeLinecap="round"
             strokeLinejoin="round"
           >
-            <path
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              strokeWidth="2"
-              d="M 200 1000 L 200 450 A 300 300 0 0 1 800 450 L 800 1000"
-            />
-            <path
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              strokeWidth="1"
-              strokeDasharray="4,8"
-              d="M 250 1000 L 250 450 A 250 250 0 0 1 750 450 L 750 1000"
-            />
+            {/* --- THE GATEWAY ARCH --- */}
+            <g className="arch-group">
+              {/* Thick Outer Door Frame */}
+              <path
+                className="davinci-path arch-path"
+                pathLength="100"
+                strokeWidth="3"
+                d="M 180 1000 L 180 400 A 320 320 0 0 1 820 400 L 820 1000"
+              />
+              {/* Inner Door Frame */}
+              <path
+                className="davinci-path arch-path"
+                pathLength="100"
+                strokeWidth="1"
+                strokeDasharray="4,8"
+                d="M 230 1000 L 230 400 A 270 270 0 0 1 770 400 L 770 1000"
+              />
+            </g>
 
-            <line
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              x1="500"
-              y1="150"
-              x2="500"
-              y2="350"
-              strokeWidth="1"
-            />
-            <path
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              strokeWidth="1.5"
-              d="M 450 350 L 550 350 L 500 420 Z"
-            />
+            {/* --- THE INTERIOR ROOM --- */}
+            <g className="interior-group">
+              {/* Deep Kitchen Background */}
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="0.8"
+                d="M 350 450 L 650 450 L 650 550 L 350 550 Z"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="350"
+                y1="500"
+                x2="650"
+                y2="500"
+                strokeWidth="0.5"
+                strokeDasharray="2,4"
+              />
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="1"
+                d="M 460 450 L 540 450 L 520 400 L 480 400 Z"
+              />
 
-            <circle
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              cx="500"
-              cy="700"
-              r="200"
-              strokeWidth="0.5"
-            />
-            <circle
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              cx="500"
-              cy="700"
-              r="150"
-              strokeWidth="0.5"
-              strokeDasharray="4,6"
-            />
+              {/* Kitchen Island */}
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="1.5"
+                d="M 400 600 L 600 600 L 650 660 L 350 660 Z"
+              />
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="1.5"
+                d="M 350 660 L 650 660 L 650 720 L 350 720 Z"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="450"
+                y1="660"
+                x2="450"
+                y2="720"
+                strokeWidth="0.8"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="550"
+                y1="660"
+                x2="550"
+                y2="720"
+                strokeWidth="0.8"
+              />
 
-            <path
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              strokeWidth="1.5"
-              d="M 350 750 L 420 680 L 580 680 L 650 750"
-            />
-            <line
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              x1="380"
-              y1="750"
-              x2="400"
-              y2="850"
-              strokeWidth="1.5"
-            />
-            <line
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              x1="620"
-              y1="750"
-              x2="600"
-              y2="850"
-              strokeWidth="1.5"
-            />
-            <path
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              strokeWidth="1.5"
-              d="M 420 680 L 380 550 A 50 50 0 0 1 620 550 L 580 680"
-            />
+              {/* Perspective Carpet */}
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="1"
+                d="M 220 950 L 780 950 L 620 760 L 380 760 Z"
+              />
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="0.5"
+                strokeDasharray="3,3"
+                d="M 240 930 L 760 930 L 610 770 L 390 770 Z"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="300"
+                y1="950"
+                x2="440"
+                y2="760"
+                strokeWidth="0.5"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="700"
+                y1="950"
+                x2="560"
+                y2="760"
+                strokeWidth="0.5"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="280"
+                y1="880"
+                x2="720"
+                y2="880"
+                strokeWidth="0.5"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="330"
+                y1="820"
+                x2="670"
+                y2="820"
+                strokeWidth="0.5"
+              />
 
-            <line
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              x1="280"
-              y1="880"
-              x2="720"
-              y2="880"
-              strokeWidth="0.5"
-            />
-            <line
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              x1="300"
-              y1="860"
-              x2="300"
-              y2="900"
-              strokeWidth="0.5"
-            />
-            <line
-              className="davinci-path masterpiece-path"
-              pathLength="100"
-              x1="700"
-              y1="860"
-              x2="700"
-              y2="900"
-              strokeWidth="0.5"
-            />
+              {/* Left Chair */}
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="1"
+                d="M 160 720 L 220 700 L 220 620 L 160 640 Z"
+              />
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="1.5"
+                d="M 160 720 L 220 700 L 250 760 L 190 780 Z"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="160"
+                y1="720"
+                x2="160"
+                y2="800"
+                strokeWidth="1"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="220"
+                y1="700"
+                x2="220"
+                y2="770"
+                strokeWidth="1"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="250"
+                y1="760"
+                x2="250"
+                y2="850"
+                strokeWidth="1"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="190"
+                y1="780"
+                x2="190"
+                y2="870"
+                strokeWidth="1"
+              />
+
+              {/* Right Chair */}
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="1"
+                d="M 840 720 L 780 700 L 780 620 L 840 640 Z"
+              />
+              <path
+                className="davinci-path interior-path"
+                pathLength="100"
+                strokeWidth="1.5"
+                d="M 840 720 L 780 700 L 750 760 L 810 780 Z"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="840"
+                y1="720"
+                x2="840"
+                y2="800"
+                strokeWidth="1"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="780"
+                y1="700"
+                x2="780"
+                y2="770"
+                strokeWidth="1"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="750"
+                y1="760"
+                x2="750"
+                y2="850"
+                strokeWidth="1"
+              />
+              <line
+                className="davinci-path interior-path"
+                pathLength="100"
+                x1="810"
+                y1="780"
+                x2="810"
+                y2="870"
+                strokeWidth="1"
+              />
+            </g>
           </g>
         </svg>
 

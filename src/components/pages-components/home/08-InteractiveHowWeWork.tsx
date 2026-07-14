@@ -51,7 +51,7 @@ export default function InteractiveProcess({
   return (
     <section
       ref={sectionRef}
-      className="backdrop-blur-xs relative w-full bg-transparent py-40 overflow-hidden z-10"
+      className=" relative w-full bg-transparent py-40 overflow-hidden z-10"
     >
       <div className="absolute top-20 left-1/2 -translate-x-1/2 text-[150px] md:text-[250px] font-black text-white/5 select-none pointer-events-none whitespace-nowrap z-[-1] tracking-tighter mix-blend-overlay">
         SYSTEM
@@ -69,20 +69,17 @@ export default function InteractiveProcess({
           {steps.map((step, index) => (
             <div
               key={step.id}
-              className={`weaving-step flex w-full ${
+              className={`weaving-step flex w-full  ${
                 index % 2 === 0
                   ? "md:justify-end md:pr-16"
                   : "md:mt-40 md:pl-16"
               }`}
             >
-              {/* Relative container to anchor the background text without clipping */}
-              <div className="relative w-full max-w-lg group">
-                {/* Precision-positioned background step number */}
+              <div className="relative w-full max-w-lg group ">
                 <div className="absolute -top-12 left-4 text-zinc-800 font-black text-7xl select-none pointer-events-none z-0 tracking-tighter transition-colors duration-500 group-hover:text-zinc-700">
                   0{index + 1}
                 </div>
 
-                {/* The actual card, tracking smoothly with filters */}
                 <div className="relative z-10   transition-all duration-500 w-full">
                   <ProcessCard step={step} />
                 </div>

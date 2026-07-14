@@ -51,7 +51,7 @@ export default function MarketingSection() {
   return (
     <section
       ref={sectionRef}
-      className="w-full bg-transparent py-32 overflow-hidden relative z-10 backdrop-blur-xs"
+      className="w-full bg-transparent py-32 overflow-hidden relative z-10  -xs"
     >
       <div className="w-[85%] max-w-[1400px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
         <div className="marketing-mask relative w-full h-[600px] lg:h-[800px] overflow-hidden rounded-[2rem] shadow-[0_0_50px_rgba(255,255,255,0.05)] border border-white/10">
@@ -65,7 +65,7 @@ export default function MarketingSection() {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
 
-          <div className="absolute bottom-10 left-10 p-8 rounded-2xl backdrop-blur-md bg-white/5 border border-white/10">
+          <div className="absolute bottom-10 left-10 p-8 rounded-2xl  -md bg-white/5 border border-white/10">
             <span className="text-6xl font-black text-white tracking-tighter block mb-2">
               100<span className="text-gray-500 font-light">%</span>
             </span>

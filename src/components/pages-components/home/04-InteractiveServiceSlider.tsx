@@ -84,7 +84,7 @@ export default function InteractiveServiceSlider({
     <section className="w-full relative z-10 bg-transparent">
       <div
         ref={sectionRef}
-        className="w-full h-screen flex flex-col justify-center overflow-hidden backdrop-blur-xs"
+        className="w-full h-screen flex flex-col justify-center overflow-hidden "
       >
         <div className="w-[85%] max-w-[1400px] mx-auto mb-16 shrink-0">
           <h2 className="text-4xl md:text-7xl font-black text-white tracking-tighter">
@@ -96,7 +96,7 @@ export default function InteractiveServiceSlider({
         <div className="flex w-full overflow-visible py-10 perspective-[2000px]">
           <div
             ref={trackRef}
-            className="flex gap-12 lg:gap-16 w-max px-6 md:px-[7.5vw] will-change-transform"
+            className="flex gap-6 lg:gap-12 w-max px-6 md:px-[7.5vw] will-change-transform"
           >
             {cards.map((card, index) => (
               <div
@@ -104,7 +104,7 @@ export default function InteractiveServiceSlider({
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
                 className={`transform-gpu transition-all duration-300 ${
-                  index % 2 !== 0 ? "mt-24" : ""
+                  index % 2 !== 0 ? "mt-12" : ""
                 }`}
               >
                 <ServiceCard card={card} />

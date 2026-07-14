@@ -17,7 +17,7 @@ export default function ServiceFeatures({ features }: { features: string[] }) {
       {features.map((feature, index) => (
         <div
           key={index}
-          className="flex flex-col p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors duration-500 backdrop-blur-sm group"
+          className="flex flex-col p-8 rounded-[2rem] bg-white/[0.02] border border-white/5 hover:bg-white/[0.04] transition-colors duration-500  -sm group"
         >
           <div className="w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center mb-6 group-hover:bg-orange-500 group-hover:scale-110 transition-all duration-500">
             <svg

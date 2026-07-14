@@ -25,7 +25,7 @@ export default function InteractiveMarquee({ items }: { items: string[] }) {
   const duplicatedItems = [...items, ...items, ...items];
 
   return (
-    <div className="w-full py-24 overflow-hidden flex items-center bg-transparent border-y border-white/5 relative z-10 backdrop-blur-xs">
+    <div className="w-full py-24 overflow-hidden flex items-center bg-transparent border-y border-white/5 relative z-10  -xs">
       <div
         ref={trackRef}
         className="flex items-center w-max will-change-transform"

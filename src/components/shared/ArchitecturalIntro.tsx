@@ -114,7 +114,7 @@ export default function ArchitecturalIntro() {
     >
       <div
         ref={stickyRef}
-        className="sticky top-0 w-full h-screen bg-[#050505] overflow-hidden flex flex-col items-center justify-center will-change-transform transform-gpu"
+        className="sticky top-0 w-full h-screen bg-[#05050576] overflow-hidden flex flex-col items-center justify-center will-change-transform transform-gpu"
       >
         <svg className="absolute w-0 h-0">
           <defs>

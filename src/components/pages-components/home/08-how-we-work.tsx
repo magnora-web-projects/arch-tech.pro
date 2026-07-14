@@ -1,6 +1,6 @@
 import { processData } from "@/src/lib";
-import InteractiveProcess from "./08-InteractiveHowWeWork";
+import { HowWeDo } from "../../interactive-components";
 
 export default function ProcessSection() {
-  return <InteractiveProcess steps={processData} />;
+  return <HowWeDo steps={processData} />;
 }

@@ -5,3 +5,4 @@ export * from "./shared";
 export * from "./footer";
 export * from "./background";
 export * from "./interactive-components";
+export * from "./animation";

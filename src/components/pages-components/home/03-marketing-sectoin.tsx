@@ -62,6 +62,7 @@ export default function MarketingSection() {
             fill
             className="object-cover scale-110"
             sizes="(max-width: 1024px) 90vw, 45vw"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80" />
 

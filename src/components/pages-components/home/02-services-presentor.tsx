@@ -1,9 +1,8 @@
-import { servicesData } from "@/src/lib/home/servicesData";
-import InteractiveServices from "./02-InteractiveServices";
 import { getHomeServices } from "@/src/lib";
+import { ServiceRow } from "../../interactive-components";
 
 export default async function ServicesSection() {
   const servicesData = await getHomeServices();
 
-  return <InteractiveServices services={servicesData} />;
+  return <ServiceRow services={servicesData} />;
 }

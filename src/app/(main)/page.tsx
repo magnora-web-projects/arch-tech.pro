@@ -1,14 +1,15 @@
 import {
-  HowWeWork,
   Intro,
   Marketing,
   Marquee,
+  MarqueeSec,
   ServiceShowCase,
   ServicesOne,
   Slider,
   Smooth,
-  WhatWeDo,
+  WorkFlow,
 } from "@/src/components";
+import { processData } from "@/src/lib";
 
 export default function Home() {
   return (
@@ -18,9 +19,8 @@ export default function Home() {
       <ServicesOne />
       <Marketing />
       <ServiceShowCase />
-      <Marquee />
-      <WhatWeDo />
-      <HowWeWork />
+      <MarqueeSec />
+      <WorkFlow steps={processData} />
     </Smooth>
   );
 }

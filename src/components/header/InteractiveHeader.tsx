@@ -43,7 +43,7 @@ export default function InteractiveHeader({
           </div>
 
           <div className="hidden lg:flex items-center justify-center flex-1 space-x-1">
-            <nav className="flex items-center bg-[#050505]/50 backdrop-blur-lg px-6 py-2.5 rounded-full border border-white/10 shadow-lg">
+            <nav className="flex items-center bg-[#050505]/50  -lg px-6 py-2.5 rounded-full border border-white/10 shadow-lg">
               {navItems.map((item) => (
                 <div key={item.label} className="flex items-center">
                   <Link
@@ -71,7 +71,7 @@ export default function InteractiveHeader({
           </div>
 
           <div className="flex justify-end items-center space-x-4">
-            <div className="hidden md:flex items-center bg-[#0a0a0a]/90 backdrop-blur-md border border-white/10 text-zinc-100 px-5 py-2.5 rounded-full shadow-lg hover:bg-white hover:text-black transition-all duration-500 cursor-pointer group">
+            <div className="hidden md:flex items-center bg-[#0a0a0a]/90  -md border border-white/10 text-zinc-100 px-5 py-2.5 rounded-full shadow-lg hover:bg-white hover:text-black transition-all duration-500 cursor-pointer group">
               <div className="flex items-center justify-center w-6 h-6 bg-white/10 group-hover:bg-black/10 rounded-full mr-3 transition-colors">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -93,7 +93,7 @@ export default function InteractiveHeader({
             </div>
 
             <button
-              className="lg:hidden flex items-center justify-center w-10 h-10 bg-[#050505]/60 backdrop-blur-md border border-white/10 text-white rounded-full hover:bg-white hover:text-black transition-all shadow-lg"
+              className="lg:hidden flex items-center justify-center w-10 h-10 bg-[#050505]/60  -md border border-white/10 text-white rounded-full hover:bg-white hover:text-black transition-all shadow-lg"
               onClick={openMenu}
               aria-label="Open Menu"
             >
@@ -119,7 +119,7 @@ export default function InteractiveHeader({
 
       {isMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/80 backdrop-blur-md z-[60] lg:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-black/80  -md z-[60] lg:hidden transition-opacity duration-300"
           onClick={closeMenu}
         ></div>
       )}

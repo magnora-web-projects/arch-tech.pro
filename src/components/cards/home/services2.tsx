@@ -1,4 +1,3 @@
-// src/components/cards/home/services2.tsx
 import Image from "next/image";
 import Link from "next/link";
 import { ServiceCardItem } from "@/src/lib";
@@ -9,7 +8,7 @@ interface ServiceCardProps {
 
 export default function ServiceCard({ card }: ServiceCardProps) {
   return (
-    <div className="relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-[500px] flex flex-col bg-[#0d0d0d]/40 border border-white/5 backdrop-blur-md rounded-[2.5rem] overflow-visible group transition-all duration-500 hover:border-white/20 ">
+    <div className="relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-[500px] flex flex-col bg-[#0d0d0d]/40 border border-white/5  backdrop-blur-md rounded-[2.5rem] overflow-visible group transition-all duration-500 hover:border-white/20 ">
       <div className="p-5 pb-0">
         <div className="relative w-full h-[280px] rounded-[1.8rem] overflow-hidden bg-zinc-900">
           <Image

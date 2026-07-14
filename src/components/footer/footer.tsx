@@ -5,7 +5,7 @@ import { ScrollToTopButton } from "@/src/components";
 
 export default function Footer() {
   return (
-    <footer className="backdrop-blur-sm relative w-full bg-transparent text-zinc-400 border-t border-white/10 pt-24 pb-10 overflow-hidden z-10">
+    <footer className=" backdrop-blur-sm relative w-full bg-transparent text-zinc-400 border-t border-white/10 pt-24 pb-10 overflow-hidden z-10">
       <div className="w-[90%] max-w-[1400px] mx-auto relative z-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8 mb-20">
           <div className="lg:col-span-4 flex flex-col">
